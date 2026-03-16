@@ -10,6 +10,22 @@
 	box-sizing: border-box;
 }
 
+/* --- Fullscreen overlay (body class added by JS) -------- */
+body.qi-noscroll {
+	overflow: hidden !important;
+}
+
+.qi-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 99999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0,0,0,0.55);
+	padding: 16px;
+}
+
 /* --- Quiz container ------------------------------------- */
 .qi-quiz {
 	--qi-bg:         #ffffff;
@@ -26,6 +42,10 @@
 	border-radius: 20px;
 	overflow: hidden;
 	position: relative;
+	/* Fullscreen mode: fill overlay but cap height to viewport */
+	max-height: calc(100dvh - 32px);
+	display: flex;
+	flex-direction: column;
 }
 
 .qi-shadow {
@@ -37,6 +57,11 @@
 	display: none;
 	animation: qiFadeIn 0.35s ease;
 	flex-direction: column;
+	/* Fill quiz height, scroll only inside if content overflows */
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	overscroll-behavior: contain;
 }
 
 .qi-page.qi-page-active {
@@ -56,6 +81,17 @@
 @keyframes qiSlideIn {
 	from { opacity: 0; transform: translateX(40px); }
 	to   { opacity: 1; transform: translateX(0); }
+}
+
+/* --- Site name header ----------------------------------- */
+.qi-site-name {
+	padding: 10px 16px 6px;
+	text-align: center;
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.4px;
+	color: #475569;
+	background: var(--qi-bg);
 }
 
 /* --- Top image / banner --------------------------------- */
@@ -192,8 +228,43 @@
 	line-height: 1;
 	flex-shrink: 0;
 	margin-left: 8px;
-	/* Position icon slightly outside for overflow effect */
 	margin-right: -8px;
+	display: inline-block;
+	/* Idle float animation – staggered via inline style delay */
+	animation: qiIconFloat 3s ease-in-out infinite;
+	transform-origin: center bottom;
+	will-change: transform;
+}
+
+/* Hover: icon bounces */
+.qi-option:hover .qi-option-icon {
+	animation: qiIconBounce 0.5s ease forwards;
+}
+
+/* Click: icon spin-pop */
+.qi-option:active .qi-option-icon {
+	animation: qiIconPop 0.3s ease forwards;
+}
+
+/* --- Emoji keyframes ------------------------------------ */
+@keyframes qiIconFloat {
+	0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+	30%       { transform: translateY(-4px) rotate(-4deg) scale(1.05); }
+	60%       { transform: translateY(-2px) rotate(3deg) scale(1.02); }
+}
+
+@keyframes qiIconBounce {
+	0%   { transform: scale(1) translateY(0); }
+	30%  { transform: scale(1.35) translateY(-6px) rotate(-8deg); }
+	55%  { transform: scale(0.9) translateY(2px) rotate(4deg); }
+	75%  { transform: scale(1.15) translateY(-3px) rotate(-3deg); }
+	100% { transform: scale(1) translateY(0) rotate(0deg); }
+}
+
+@keyframes qiIconPop {
+	0%   { transform: scale(1); }
+	50%  { transform: scale(1.5) rotate(15deg); }
+	100% { transform: scale(1) rotate(0deg); }
 }
 
 /* --- Loading state -------------------------------------- */
@@ -298,6 +369,7 @@
 @media (prefers-reduced-motion: reduce) {
 	.qi-page,
 	.qi-option,
+	.qi-option-icon,
 	.qi-progress-bar {
 		animation: none !important;
 		transition: none !important;

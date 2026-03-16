@@ -55,7 +55,9 @@ class Quiz_Interativo_Shortcode {
 		}
 
 		ob_start();
+		echo '<div class="qi-overlay" id="qi-overlay-' . esc_attr( $id ) . '">';
 		self::render_quiz( $id, $pages, $global_opts, $quiz->post_title );
+		echo '</div>';
 		return ob_get_clean();
 	}
 
@@ -116,6 +118,10 @@ class Quiz_Interativo_Shortcode {
 			style="<?php echo esc_attr( $page_style ); ?>"
 			aria-hidden="<?php echo $is_first ? 'false' : 'true'; ?>"
 		>
+			<?php if ( ! empty( $page['show_site_name'] ) && ! empty( $page['site_name'] ) ) : ?>
+			<div class="qi-site-name"><?php echo esc_html( $page['site_name'] ); ?></div>
+			<?php endif; ?>
+
 			<?php if ( ! empty( $page['image'] ) ) : ?>
 			<div class="qi-page-image">
 				<img

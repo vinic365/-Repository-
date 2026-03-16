@@ -24,6 +24,10 @@
 
 		if (!pages.length) return;
 
+		// Lock page scroll – quiz is fixed/fullscreen.
+		document.documentElement.classList.add('qi-noscroll');
+		document.body.classList.add('qi-noscroll');
+
 		// Ensure only first page is active on load.
 		pages.forEach(function (page, i) {
 			if (i === 0) {
@@ -33,6 +37,11 @@
 				page.classList.remove('qi-page-active');
 				page.setAttribute('aria-hidden', 'true');
 			}
+		});
+
+		// Stagger emoji float animations so they don't all move in sync.
+		quiz.querySelectorAll('.qi-option-icon').forEach(function (icon, i) {
+			icon.style.animationDelay = (i * 0.4) + 's';
 		});
 
 		// Add optional progress bar.
@@ -150,20 +159,10 @@
 			quiz._progressWrap.setAttribute('aria-valuenow', String(index + 1));
 		}
 
-		// Scroll quiz into view (mobile UX).
-		scrollToQuiz(quiz);
-	}
-
-	/**
-	 * Smooth scroll quiz container into view.
-	 * @param {HTMLElement} quiz
-	 */
-	function scrollToQuiz(quiz) {
-		const rect = quiz.getBoundingClientRect();
-		if (rect.top < 0 || rect.top > 80) {
-			const top = window.pageYOffset + rect.top - 24;
-			window.scrollTo({ top: top, behavior: 'smooth' });
-		}
+		// Restagger emoji delays for new page.
+		$nextPage.querySelectorAll('.qi-option-icon').forEach(function (icon, i) {
+			icon.style.animationDelay = (i * 0.4) + 's';
+		});
 	}
 
 	// Init on DOM ready.

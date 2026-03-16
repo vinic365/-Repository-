@@ -141,6 +141,8 @@
 				const page  = {
 					title:           $page.find('.qi-field-title').val(),
 					subtitle:        $page.find('.qi-field-subtitle').val(),
+					site_name:       $page.find('.qi-field-site-name').val(),
+					show_site_name:  $page.find('.qi-field-show-site-name').is(':checked') ? '1' : '',
 					image:           $page.find('.qi-field-image').val(),
 					bg_color:        $page.find('.qi-field-bg-color').val(),
 					btn_color:       $page.find('.qi-field-btn-color').val(),

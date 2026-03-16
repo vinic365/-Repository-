@@ -154,6 +154,8 @@ class Quiz_Interativo_Ajax {
 			$clean_page = array(
 				'title'           => sanitize_text_field( $page['title'] ?? '' ),
 				'subtitle'        => sanitize_text_field( $page['subtitle'] ?? '' ),
+				'site_name'       => sanitize_text_field( $page['site_name'] ?? '' ),
+				'show_site_name'  => ! empty( $page['show_site_name'] ) ? '1' : '',
 				'image'           => esc_url_raw( $page['image'] ?? '' ),
 				'bg_color'        => sanitize_hex_color( $page['bg_color'] ?? '#ffffff' ) ?: '#ffffff',
 				'btn_color'       => sanitize_hex_color( $page['btn_color'] ?? '#2ecc40' ) ?: '#2ecc40',
