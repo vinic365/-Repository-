@@ -76,6 +76,20 @@
 				handleOptionClick(quiz, btn);
 			});
 
+			// Touch: trigger bounce animation on tap (hover doesn't fire on mobile).
+			btn.addEventListener('touchstart', function () {
+				var icon = btn.querySelector('.qi-option-icon');
+				if (!icon) return;
+				icon.classList.remove('qi-icon-bounce', 'qi-icon-pop');
+				// Force reflow so removing + re-adding class restarts animation.
+				void icon.offsetWidth;
+				icon.classList.add('qi-icon-bounce');
+				icon.addEventListener('animationend', function handler() {
+					icon.classList.remove('qi-icon-bounce');
+					icon.removeEventListener('animationend', handler);
+				});
+			}, { passive: true });
+
 			// Keyboard: Enter / Space
 			btn.addEventListener('keydown', function (e) {
 				if (e.key === 'Enter' || e.key === ' ') {

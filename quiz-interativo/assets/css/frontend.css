@@ -69,18 +69,28 @@ body.qi-noscroll {
 
 .qi-page.qi-page-active {
 	display: flex;
+	-webkit-animation: qiFadeIn 0.35s ease both;
 	animation: qiFadeIn 0.35s ease both;
 }
 
 .qi-page.qi-slide-in {
+	-webkit-animation: qiSlideIn 0.32s ease both;
 	animation: qiSlideIn 0.32s ease both;
 }
 
+@-webkit-keyframes qiFadeIn {
+	from { opacity: 0; -webkit-transform: translateY(14px); }
+	to   { opacity: 1; -webkit-transform: translateY(0); }
+}
 @keyframes qiFadeIn {
 	from { opacity: 0; transform: translateY(14px); }
 	to   { opacity: 1; transform: translateY(0); }
 }
 
+@-webkit-keyframes qiSlideIn {
+	from { opacity: 0; -webkit-transform: translateX(45px); }
+	to   { opacity: 1; -webkit-transform: translateX(0); }
+}
 @keyframes qiSlideIn {
 	from { opacity: 0; transform: translateX(45px); }
 	to   { opacity: 1; transform: translateX(0); }
@@ -88,14 +98,16 @@ body.qi-noscroll {
 
 /* --- Site name ------------------------------------------ */
 .qi-site-name {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
 	padding: 10px 20px 6px;
-	text-align: center;
+	text-align: center !important;
 	font-size: 0.82rem;
 	font-weight: 700;
 	letter-spacing: 0.5px;
 	color: #475569;
 	background: var(--qi-bg);
-	/* Round the top corners to match the quiz card */
 	border-radius: 20px 20px 0 0;
 }
 
@@ -256,46 +268,81 @@ body.qi-noscroll {
 	position: relative;
 	z-index: 2;
 
-	/* Idle floating animation – delay set per-icon by JS */
+	/* Force GPU compositing layer – critical for iOS Safari animations */
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-perspective: 1000px;
+	perspective: 1000px;
+
+	/* Idle floating animation – delay staggered per-icon by JS */
+	-webkit-animation: qiIconFloat 2.6s ease-in-out infinite both;
 	animation: qiIconFloat 2.6s ease-in-out infinite both;
+
+	/* transform-origin at bottom-center for natural wobble */
+	-webkit-transform-origin: center 70%;
 	transform-origin: center 70%;
-	will-change: transform;
 }
 
 /* --- Emoji animations ------------------------------------ */
 
-/* Idle: gentle float + wobble */
+/* Idle float – uses translate3d for hardware acceleration on mobile */
+@-webkit-keyframes qiIconFloat {
+	0%   { -webkit-transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
+	20%  { -webkit-transform: translate3d(0, -6px, 0) rotate(-5deg)  scale(1.08); }
+	50%  { -webkit-transform: translate3d(0, -3px, 0) rotate(4deg)   scale(1.04); }
+	75%  { -webkit-transform: translate3d(0, -7px, 0) rotate(-3deg)  scale(1.06); }
+	100% { -webkit-transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
+}
 @keyframes qiIconFloat {
-	0%   { transform: translateY(0)    rotate(0deg)   scale(1);    }
-	20%  { transform: translateY(-6px) rotate(-6deg)  scale(1.08); }
-	50%  { transform: translateY(-3px) rotate(4deg)   scale(1.04); }
-	75%  { transform: translateY(-7px) rotate(-3deg)  scale(1.06); }
-	100% { transform: translateY(0)    rotate(0deg)   scale(1);    }
+	0%   { transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
+	20%  { transform: translate3d(0, -6px, 0) rotate(-5deg)  scale(1.08); }
+	50%  { transform: translate3d(0, -3px, 0) rotate(4deg)   scale(1.04); }
+	75%  { transform: translate3d(0, -7px, 0) rotate(-3deg)  scale(1.06); }
+	100% { transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
 }
 
-/* Hover: dramatic bounce */
-.qi-option:hover .qi-option-icon {
+/* Hover bounce (desktop) and .qi-icon-bounce class (touch via JS) */
+.qi-option:hover .qi-option-icon,
+.qi-option-icon.qi-icon-bounce {
+	-webkit-animation: qiIconBounce 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 	animation: qiIconBounce 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
+@-webkit-keyframes qiIconBounce {
+	0%   { -webkit-transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
+	18%  { -webkit-transform: translate3d(0, -10px, 0) scale(1.45) rotate(-12deg); }
+	40%  { -webkit-transform: translate3d(0,  4px, 0)  scale(0.85) rotate(7deg);   }
+	62%  { -webkit-transform: translate3d(0, -5px, 0)  scale(1.22) rotate(-5deg);  }
+	80%  { -webkit-transform: translate3d(0,  2px, 0)  scale(0.95) rotate(3deg);   }
+	100% { -webkit-transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
+}
 @keyframes qiIconBounce {
-	0%   { transform: scale(1)    translateY(0)    rotate(0deg);    }
-	18%  { transform: scale(1.45) translateY(-10px) rotate(-12deg); }
-	40%  { transform: scale(0.85) translateY(4px)   rotate(7deg);   }
-	62%  { transform: scale(1.22) translateY(-5px)  rotate(-5deg);  }
-	80%  { transform: scale(0.95) translateY(2px)   rotate(3deg);   }
-	100% { transform: scale(1)    translateY(0)     rotate(0deg);   }
+	0%   { transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
+	18%  { transform: translate3d(0, -10px, 0) scale(1.45) rotate(-12deg); }
+	40%  { transform: translate3d(0,  4px, 0)  scale(0.85) rotate(7deg);   }
+	62%  { transform: translate3d(0, -5px, 0)  scale(1.22) rotate(-5deg);  }
+	80%  { transform: translate3d(0,  2px, 0)  scale(0.95) rotate(3deg);   }
+	100% { transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
 }
 
-/* Click: spin-pop */
-.qi-option:active .qi-option-icon {
-	animation: qiIconPop 0.3s ease both;
+/* Click / tap: spin-pop */
+.qi-option:active .qi-option-icon,
+.qi-option-icon.qi-icon-pop {
+	-webkit-animation: qiIconPop 0.28s ease both;
+	animation: qiIconPop 0.28s ease both;
 }
 
+@-webkit-keyframes qiIconPop {
+	0%   { -webkit-transform: translate3d(0, 0, 0) scale(1)   rotate(0deg);  }
+	45%  { -webkit-transform: translate3d(0, 0, 0) scale(1.6) rotate(20deg); }
+	100% { -webkit-transform: translate3d(0, 0, 0) scale(1)   rotate(0deg);  }
+}
 @keyframes qiIconPop {
-	0%   { transform: scale(1)    rotate(0deg);   }
-	45%  { transform: scale(1.6)  rotate(20deg);  }
-	100% { transform: scale(1)    rotate(0deg);   }
+	0%   { transform: translate3d(0, 0, 0) scale(1)   rotate(0deg);  }
+	45%  { transform: translate3d(0, 0, 0) scale(1.6) rotate(20deg); }
+	100% { transform: translate3d(0, 0, 0) scale(1)   rotate(0deg);  }
 }
 
 /* --- Loading state -------------------------------------- */
@@ -382,7 +429,9 @@ body.qi-noscroll {
 	.qi-option,
 	.qi-option-icon,
 	.qi-progress-bar {
+		-webkit-animation: none !important;
 		animation: none !important;
+		-webkit-transition: none !important;
 		transition: none !important;
 	}
 }
