@@ -40,8 +40,13 @@
 		});
 
 		// Stagger emoji float animations so they don't all move in sync.
+		// Negative delays start the animation already in-progress at different
+		// offsets (0.65s ≈ 25% of the 2.6s cycle), avoiding the race condition
+		// where positive delays are ignored on animations that already started.
 		quiz.querySelectorAll('.qi-option-icon').forEach(function (icon, i) {
-			icon.style.animationDelay = (i * 0.4) + 's';
+			var delay = '-' + (i * 0.65) + 's';
+			icon.style.webkitAnimationDelay = delay;
+			icon.style.animationDelay = delay;
 		});
 
 		// Add optional progress bar.
@@ -175,7 +180,9 @@
 
 		// Restagger emoji delays for new page.
 		$nextPage.querySelectorAll('.qi-option-icon').forEach(function (icon, i) {
-			icon.style.animationDelay = (i * 0.4) + 's';
+			var delay = '-' + (i * 0.65) + 's';
+			icon.style.webkitAnimationDelay = delay;
+			icon.style.animationDelay = delay;
 		});
 	}
 
