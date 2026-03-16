@@ -157,10 +157,10 @@ class Quiz_Interativo_Ajax {
 				'site_name'  => sanitize_text_field( $page['site_name'] ?? '' ),
 				'btn_height' => min( 140, max( 44, absint( $page['btn_height'] ?? 72 ) ) ),
 				'image'      => esc_url_raw( $page['image'] ?? '' ),
-				'bg_color'        => sanitize_hex_color( $page['bg_color'] ?? '#ffffff' ) ?: '#ffffff',
-				'btn_color'       => sanitize_hex_color( $page['btn_color'] ?? '#2ecc40' ) ?: '#2ecc40',
-				'btn_hover_color' => sanitize_hex_color( $page['btn_hover_color'] ?? '#27ae35' ) ?: '#27ae35',
-				'btn_text_color'  => sanitize_hex_color( $page['btn_text_color'] ?? '#ffffff' ) ?: '#ffffff',
+				'bg_color'        => sanitize_hex_color( $page['bg_color'] ?? '' ) ?: '',
+				'btn_color'       => sanitize_hex_color( $page['btn_color'] ?? '' ) ?: '',
+				'btn_hover_color' => sanitize_hex_color( $page['btn_hover_color'] ?? '' ) ?: '',
+				'btn_text_color'  => sanitize_hex_color( $page['btn_text_color'] ?? '' ) ?: '',
 				'disclaimer'      => wp_kses_post( $page['disclaimer'] ?? '' ),
 				'policy_links'    => self::sanitize_policy_links( $page['policy_links'] ?? array() ),
 				'options'         => self::sanitize_options( $page['options'] ?? array() ),
@@ -183,7 +183,7 @@ class Quiz_Interativo_Ajax {
 				continue;
 			}
 
-			$action_type = in_array( $opt['action_type'] ?? 'page', array( 'page', 'url' ), true ) ? $opt['action_type'] : 'page';
+			$action_type = in_array( $opt['action_type'] ?? 'page', array( 'page', 'url' ), true ) ? ( $opt['action_type'] ?? 'page' ) : 'page';
 
 			$clean[] = array(
 				'text'          => sanitize_text_field( $opt['text'] ?? '' ),

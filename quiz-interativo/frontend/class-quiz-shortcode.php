@@ -17,8 +17,8 @@ class Quiz_Interativo_Shortcode {
 	 * @param array $atts Shortcode attributes.
 	 * @return string HTML output.
 	 */
-	public static function render( array $atts ): string {
-		$atts = shortcode_atts( array( 'id' => 0 ), $atts, 'quiz_interativo' );
+	public static function render( $atts ): string {
+		$atts = shortcode_atts( array( 'id' => 0 ), (array) $atts, 'quiz_interativo' );
 		$id   = absint( $atts['id'] );
 
 		if ( ! $id ) {
@@ -113,11 +113,11 @@ class Quiz_Interativo_Shortcode {
 		// Site name: per-page value wins; fall back to global setting.
 		$site_name       = ! empty( $page['site_name'] )       ? $page['site_name']       : $global_opts['site_name'];
 
-		$page_style  = 'background-color:' . esc_attr( $bg_color ) . ';';
-		$page_style .= '--qi-btn:'         . esc_attr( $btn_color ) . ';';
-		$page_style .= '--qi-btn-hover:'   . esc_attr( $btn_hover_color ) . ';';
-		$page_style .= '--qi-btn-text:'    . esc_attr( $btn_text_color ) . ';';
-		$page_style .= '--qi-btn-height:'  . esc_attr( $btn_height ) . 'px;';
+		$page_style  = 'background-color:' . $bg_color . ';';
+		$page_style .= '--qi-btn:'         . $btn_color . ';';
+		$page_style .= '--qi-btn-hover:'   . $btn_hover_color . ';';
+		$page_style .= '--qi-btn-text:'    . $btn_text_color . ';';
+		$page_style .= '--qi-btn-height:'  . $btn_height . 'px;';
 		?>
 		<div
 			class="<?php echo esc_attr( $page_class ); ?>"

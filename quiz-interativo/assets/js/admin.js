@@ -20,11 +20,6 @@
 
 			// Status toggle label
 			$(document).on('change', '#qi-quiz-status', function () {
-				$('#qi-status-label').text(
-					$(this).is(':checked')
-						? quizInterativoAdmin.strings.saved.replace('!', '') && 'Ativo'
-						: 'Inativo'
-				);
 				const label = $(this).is(':checked') ? 'Ativo' : 'Inativo';
 				$('#qi-status-label').text(label);
 			});
@@ -313,7 +308,7 @@
 
 			frame.on('select', function () {
 				const attachment = frame.state().get('selection').first().toJSON();
-				const url        = attachment.sizes?.medium?.url || attachment.url;
+				const url        = (attachment.sizes && attachment.sizes.medium && attachment.sizes.medium.url) || attachment.url;
 
 				$picker.find('.qi-field-image').val(attachment.url);
 				$picker.find('.qi-image-preview img').attr('src', url);
