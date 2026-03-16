@@ -1,0 +1,585 @@
+/* =========================================================
+   Quiz Interativo – Admin Styles
+   ========================================================= */
+
+/* --- Wrap ------------------------------------------------ */
+.qi-wrap {
+	max-width: 1100px;
+}
+
+.qi-page-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 1.5rem;
+	margin-bottom: 24px;
+}
+
+.qi-page-title .dashicons {
+	font-size: 1.5rem;
+	color: #2ecc40;
+}
+
+/* --- Buttons --------------------------------------------- */
+.qi-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 8px 18px;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	border: none;
+	text-decoration: none;
+	transition: background 0.2s, transform 0.1s;
+	line-height: 1.4;
+}
+
+.qi-btn:active {
+	transform: scale(0.97);
+}
+
+.qi-btn-primary {
+	background: #2ecc40;
+	color: #fff;
+}
+.qi-btn-primary:hover {
+	background: #27ae35;
+	color: #fff;
+}
+
+.qi-btn-secondary {
+	background: #f0f0f0;
+	color: #333;
+	border: 1px solid #ccc;
+}
+.qi-btn-secondary:hover {
+	background: #e0e0e0;
+	color: #333;
+}
+
+.qi-btn-danger {
+	background: #e74c3c;
+	color: #fff;
+}
+.qi-btn-danger:hover {
+	background: #c0392b;
+	color: #fff;
+}
+
+.qi-btn-link {
+	background: transparent;
+	color: #0073aa;
+	padding: 4px 8px;
+	border: none;
+}
+.qi-btn-link:hover {
+	color: #005177;
+	background: transparent;
+}
+
+.qi-btn-lg  { font-size: 15px; padding: 12px 28px; }
+.qi-btn-sm  { font-size: 12px; padding: 5px 12px; }
+.qi-btn-xs  { font-size: 11px; padding: 3px 8px; }
+.qi-btn-icon {
+	padding: 4px 7px;
+	background: transparent;
+	border: 1px solid #ccc;
+	color: #555;
+}
+.qi-btn-icon:hover {
+	background: #f0f0f0;
+	color: #222;
+}
+.qi-btn-icon.qi-btn-danger {
+	border-color: #e74c3c;
+	color: #e74c3c;
+}
+.qi-btn-icon.qi-btn-danger:hover {
+	background: #e74c3c;
+	color: #fff;
+}
+
+/* --- Cards ----------------------------------------------- */
+.qi-card {
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 10px;
+	padding: 24px;
+	margin-bottom: 24px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.qi-card h2 {
+	margin: 0 0 16px;
+	font-size: 1.1rem;
+	color: #1e293b;
+}
+
+.qi-card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.qi-card-header h2 {
+	margin: 0;
+}
+
+/* --- Form elements --------------------------------------- */
+.qi-input {
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	font-size: 13px;
+	background: #fff;
+	color: #333;
+	box-sizing: border-box;
+	transition: border-color 0.2s;
+}
+
+.qi-input:focus {
+	outline: none;
+	border-color: #2ecc40;
+	box-shadow: 0 0 0 3px rgba(46,204,64,0.12);
+}
+
+.qi-textarea {
+	resize: vertical;
+	min-height: 80px;
+}
+
+.qi-row {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 16px;
+	margin-bottom: 14px;
+}
+
+.qi-row-colors {
+	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.qi-col {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.qi-col label {
+	font-size: 12px;
+	font-weight: 600;
+	color: #555;
+	text-transform: uppercase;
+	letter-spacing: .4px;
+}
+
+.qi-col-sm {
+	min-width: 140px;
+	max-width: 200px;
+}
+
+/* Color picker */
+.qi-color-wrap {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.qi-color-wrap input[type="color"] {
+	width: 36px;
+	height: 36px;
+	padding: 2px;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	cursor: pointer;
+	flex-shrink: 0;
+}
+
+.qi-color-text {
+	flex: 1;
+	padding: 7px 10px;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	font-size: 12px;
+	font-family: monospace;
+}
+
+/* Toggle */
+.qi-toggle-wrap {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 4px;
+}
+
+.qi-toggle {
+	position: relative;
+	display: inline-block;
+	width: 46px;
+	height: 24px;
+	flex-shrink: 0;
+}
+
+.qi-toggle input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.qi-toggle-slider {
+	position: absolute;
+	inset: 0;
+	background: #ccc;
+	border-radius: 34px;
+	transition: background 0.3s;
+	cursor: pointer;
+}
+
+.qi-toggle-slider::before {
+	content: '';
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	left: 3px;
+	bottom: 3px;
+	background: #fff;
+	border-radius: 50%;
+	transition: transform 0.3s;
+}
+
+.qi-toggle input:checked + .qi-toggle-slider {
+	background: #2ecc40;
+}
+
+.qi-toggle input:checked + .qi-toggle-slider::before {
+	transform: translateX(22px);
+}
+
+.qi-toggle-label {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+/* --- Table ---------------------------------------------- */
+.qi-table {
+	width: 100%;
+	border-collapse: collapse;
+	background: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.qi-table th {
+	background: #f8fafc;
+	padding: 12px 16px;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: .5px;
+	color: #64748b;
+	text-align: left;
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.qi-table td {
+	padding: 12px 16px;
+	border-bottom: 1px solid #f1f5f9;
+	font-size: 13px;
+	vertical-align: middle;
+}
+
+.qi-table tr:last-child td {
+	border-bottom: none;
+}
+
+.qi-table tbody tr:hover td {
+	background: #f8fafc;
+}
+
+.qi-status {
+	display: inline-block;
+	padding: 3px 10px;
+	border-radius: 20px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.qi-status-active {
+	background: #dcfce7;
+	color: #166534;
+}
+
+.qi-status-inactive {
+	background: #f1f5f9;
+	color: #64748b;
+}
+
+.qi-actions {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+/* --- Shortcode ------------------------------------------ */
+.qi-shortcode {
+	background: #f1f5f9;
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 12px;
+	cursor: text;
+	user-select: all;
+	color: #0073aa;
+}
+
+.qi-shortcode-info {
+	margin-top: 16px;
+	padding-top: 16px;
+	border-top: 1px dashed #e0e0e0;
+}
+
+/* --- Empty state ---------------------------------------- */
+.qi-empty-state {
+	text-align: center;
+	padding: 60px 24px;
+	color: #94a3b8;
+}
+
+.qi-empty-icon {
+	font-size: 3rem !important;
+	width: 3rem !important;
+	height: 3rem !important;
+	display: block;
+	margin: 0 auto 16px;
+	color: #cbd5e1;
+}
+
+.qi-empty-notice {
+	color: #94a3b8;
+	font-style: italic;
+	text-align: center;
+	padding: 12px 0;
+}
+
+/* --- Hint ----------------------------------------------- */
+.qi-hint {
+	font-size: 12px;
+	color: #94a3b8;
+	margin: 0 0 12px;
+}
+
+/* --- Page blocks ---------------------------------------- */
+.qi-page-block {
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
+	margin-bottom: 14px;
+	overflow: hidden;
+	background: #fff;
+	transition: box-shadow 0.2s;
+}
+
+.qi-page-block:hover {
+	box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.qi-page-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 16px;
+	background: #f8fafc;
+	border-bottom: 1px solid #e2e8f0;
+	cursor: default;
+}
+
+.qi-page-drag-handle {
+	cursor: move;
+	color: #94a3b8;
+	padding: 4px;
+}
+
+.qi-page-drag-handle:hover {
+	color: #475569;
+}
+
+.qi-page-title-label {
+	flex: 1;
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: #334155;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.qi-page-actions {
+	display: flex;
+	gap: 6px;
+}
+
+.qi-page-body {
+	padding: 16px;
+}
+
+.qi-page-block.qi-collapsed .qi-page-body {
+	display: none;
+}
+
+/* --- Sections ------------------------------------------- */
+.qi-section {
+	padding: 16px 0;
+	border-bottom: 1px solid #f1f5f9;
+}
+
+.qi-section:last-child {
+	border-bottom: none;
+}
+
+.qi-section h4 {
+	margin: 0 0 12px;
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: .5px;
+	color: #475569;
+}
+
+.qi-section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px;
+}
+
+.qi-section-header h4 {
+	margin: 0;
+}
+
+.qi-section-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+	padding-bottom: 8px;
+}
+
+.qi-section-toggle h4 {
+	margin: 0;
+}
+
+/* --- Image picker ---------------------------------------- */
+.qi-image-picker {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.qi-image-preview {
+	width: 80px;
+	height: 50px;
+	border-radius: 6px;
+	overflow: hidden;
+	border: 1px solid #e2e8f0;
+	flex-shrink: 0;
+}
+
+.qi-image-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* --- Option blocks -------------------------------------- */
+.qi-option-block {
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	margin-bottom: 10px;
+	overflow: hidden;
+	background: #fafafa;
+}
+
+.qi-option-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	background: #f1f5f9;
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.qi-option-drag {
+	cursor: move;
+	color: #94a3b8;
+}
+
+.qi-option-header strong {
+	flex: 1;
+	font-size: 12px;
+}
+
+.qi-option-body {
+	padding: 12px;
+}
+
+/* --- Policy links --------------------------------------- */
+.qi-policy-link-row {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.qi-policy-link-row .qi-input {
+	flex: 1;
+}
+
+/* --- Save bar ------------------------------------------- */
+.qi-save-bar {
+	position: sticky;
+	bottom: 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 16px;
+	padding: 16px 24px;
+	background: #fff;
+	border-top: 1px solid #e2e8f0;
+	box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+	z-index: 100;
+	border-radius: 0 0 10px 10px;
+}
+
+.qi-save-message {
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.qi-save-message.qi-success { color: #166534; }
+.qi-save-message.qi-error   { color: #991b1b; }
+
+/* --- Settings form -------------------------------------- */
+.qi-settings-form .qi-save-bar {
+	border-radius: 10px;
+	position: static;
+	margin-top: 0;
+}
+
+/* --- Required ------------------------------------------- */
+.required {
+	color: #e74c3c;
+}
+
+/* --- Sortable placeholder ------------------------------- */
+.qi-page-block-placeholder,
+.qi-option-block-placeholder {
+	border: 2px dashed #a3e4ab;
+	border-radius: 10px;
+	background: #f0fff4;
+	height: 60px;
+	margin-bottom: 14px;
+}

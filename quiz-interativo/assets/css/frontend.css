@@ -1,0 +1,305 @@
+/* =========================================================
+   Quiz Interativo – Frontend Styles
+   Responsive, SEO-friendly, performant.
+   ========================================================= */
+
+/* --- Reset & base --------------------------------------- */
+.qi-quiz *,
+.qi-quiz *::before,
+.qi-quiz *::after {
+	box-sizing: border-box;
+}
+
+/* --- Quiz container ------------------------------------- */
+.qi-quiz {
+	--qi-bg:         #ffffff;
+	--qi-btn:        #2ecc40;
+	--qi-btn-hover:  #27ae35;
+	--qi-btn-text:   #ffffff;
+	--qi-radius:     50px;
+	--qi-transition: 0.22s ease;
+
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+	width: 100%;
+	margin: 0 auto;
+	background: var(--qi-bg);
+	border-radius: 20px;
+	overflow: hidden;
+	position: relative;
+}
+
+.qi-shadow {
+	box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+}
+
+/* --- Pages ---------------------------------------------- */
+.qi-page {
+	display: none;
+	animation: qiFadeIn 0.35s ease;
+	flex-direction: column;
+}
+
+.qi-page.qi-page-active {
+	display: flex;
+}
+
+@keyframes qiFadeIn {
+	from { opacity: 0; transform: translateY(12px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Slide-in animation for next pages */
+.qi-page.qi-slide-in {
+	animation: qiSlideIn 0.32s ease;
+}
+
+@keyframes qiSlideIn {
+	from { opacity: 0; transform: translateX(40px); }
+	to   { opacity: 1; transform: translateX(0); }
+}
+
+/* --- Top image / banner --------------------------------- */
+.qi-page-image {
+	width: 100%;
+	line-height: 0;
+}
+
+.qi-page-image img {
+	width: 100%;
+	height: auto;
+	display: block;
+	object-fit: cover;
+	max-height: 320px;
+}
+
+/* --- Page content --------------------------------------- */
+.qi-page-content {
+	padding: 28px 24px 20px;
+	flex: 1;
+}
+
+/* --- Title & subtitle ----------------------------------- */
+.qi-page-title {
+	margin: 0 0 8px;
+	font-size: clamp(1.4rem, 4vw, 1.9rem);
+	font-weight: 800;
+	text-align: center;
+	color: #1a1a1a;
+	line-height: 1.25;
+}
+
+.qi-page-subtitle {
+	margin: 0 0 24px;
+	font-size: clamp(0.9rem, 2.5vw, 1rem);
+	text-align: center;
+	color: #64748b;
+	line-height: 1.6;
+}
+
+/* --- Options list --------------------------------------- */
+.qi-options {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	width: 100%;
+}
+
+/* --- Option button -------------------------------------- */
+.qi-option-wrap {
+	width: 100%;
+}
+
+.qi-option {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0 24px;
+	background: var(--qi-btn);
+	color: var(--qi-btn-text);
+	border: none;
+	border-radius: var(--qi-radius);
+	font-weight: 800;
+	font-size: clamp(1rem, 3vw, 1.2rem);
+	letter-spacing: 0.5px;
+	cursor: pointer;
+	transition:
+		background var(--qi-transition),
+		transform  var(--qi-transition),
+		box-shadow var(--qi-transition);
+	text-align: left;
+	position: relative;
+	overflow: hidden;
+	/* Prevent text selection on rapid clicks */
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+/* Ripple effect */
+.qi-option::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: rgba(255,255,255,0);
+	transition: background 0.3s;
+}
+
+.qi-option:hover::after {
+	background: rgba(255,255,255,0.08);
+}
+
+.qi-option:hover {
+	background: var(--qi-btn-hover);
+	transform: translateY(-2px) scale(1.01);
+	box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.qi-option:active {
+	transform: scale(0.98);
+	box-shadow: none;
+}
+
+/* Focus visible for keyboard navigation */
+.qi-option:focus-visible {
+	outline: 3px solid rgba(255,255,255,0.8);
+	outline-offset: 3px;
+}
+
+/* Sizes */
+.qi-option.qi-btn-lg {
+	height: 72px;
+	font-size: clamp(1rem, 3vw, 1.2rem);
+}
+
+.qi-option.qi-btn-md {
+	height: 56px;
+	font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+}
+
+.qi-option.qi-btn-sm {
+	height: 44px;
+	font-size: 0.9rem;
+}
+
+/* Text & icon */
+.qi-option-text {
+	flex: 1;
+	text-align: center;
+}
+
+.qi-option-icon {
+	font-size: clamp(1.4rem, 4vw, 2rem);
+	line-height: 1;
+	flex-shrink: 0;
+	margin-left: 8px;
+	/* Position icon slightly outside for overflow effect */
+	margin-right: -8px;
+}
+
+/* --- Loading state -------------------------------------- */
+.qi-option.qi-loading {
+	opacity: 0.7;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+/* --- Footer / disclaimer -------------------------------- */
+.qi-page-footer {
+	padding: 16px 24px 20px;
+	border-top: 1px solid rgba(0,0,0,0.06);
+	margin-top: auto;
+}
+
+.qi-disclaimer {
+	font-size: 0.72rem;
+	color: #94a3b8;
+	text-align: center;
+	line-height: 1.6;
+	margin: 0 0 8px;
+}
+
+.qi-policy-links {
+	text-align: center;
+	font-size: 0.75rem;
+}
+
+.qi-policy-links a {
+	color: #64748b;
+	text-decoration: underline;
+	transition: color 0.2s;
+}
+
+.qi-policy-links a:hover {
+	color: #1e293b;
+}
+
+/* --- Progress indicator (optional) --------------------- */
+.qi-progress {
+	height: 4px;
+	background: rgba(0,0,0,0.06);
+	overflow: hidden;
+}
+
+.qi-progress-bar {
+	height: 100%;
+	background: var(--qi-btn);
+	transition: width 0.4s ease;
+}
+
+/* --- Inactive overlay (admin preview only) ------------- */
+.qi-quiz[data-inactive] {
+	position: relative;
+}
+
+.qi-quiz[data-inactive]::before {
+	content: 'Quiz Inativo';
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: rgba(0,0,0,0.6);
+	color: #fff;
+	font-size: 11px;
+	padding: 3px 8px;
+	border-radius: 20px;
+	z-index: 10;
+}
+
+/* --- Responsive ----------------------------------------- */
+@media (max-width: 600px) {
+	.qi-page-content {
+		padding: 20px 16px 16px;
+	}
+
+	.qi-page-footer {
+		padding: 12px 16px 16px;
+	}
+
+	.qi-option.qi-btn-lg {
+		height: 62px;
+	}
+
+	.qi-option {
+		padding: 0 16px;
+	}
+
+	.qi-option-icon {
+		font-size: 1.6rem;
+	}
+}
+
+@media (max-width: 380px) {
+	.qi-option.qi-btn-lg {
+		height: 54px;
+		font-size: 0.95rem;
+	}
+}
+
+/* --- Prefers reduced motion ----------------------------- */
+@media (prefers-reduced-motion: reduce) {
+	.qi-page,
+	.qi-option,
+	.qi-progress-bar {
+		animation: none !important;
+		transition: none !important;
+	}
+}
