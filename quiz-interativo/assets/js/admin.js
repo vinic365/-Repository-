@@ -142,6 +142,7 @@
 					title:           $page.find('.qi-field-title').val(),
 					subtitle:        $page.find('.qi-field-subtitle').val(),
 					site_name:       $page.find('.qi-field-site-name').val(),
+					btn_height:      $page.find('.qi-field-btn-height').val() || 72,
 					image:           $page.find('.qi-field-image').val(),
 					bg_color:        $page.find('.qi-field-bg-color').val(),
 					btn_color:       $page.find('.qi-field-btn-color').val(),

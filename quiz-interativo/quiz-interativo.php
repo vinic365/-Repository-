@@ -3,7 +3,7 @@
  * Plugin Name: Quiz Interativo
  * Plugin URI:  https://meusite.com/quiz-interativo
  * Description: Crie quizzes interativos em formato de funil para páginas de conversão. Insira com o shortcode [quiz_interativo id="1"].
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      Seu Nome
  * Author URI:  https://meusite.com
  * License:     GPL-2.0+
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUIZ_INTERATIVO_VERSION', '1.0.0' );
+define( 'QUIZ_INTERATIVO_VERSION', '1.1.0' );
 define( 'QUIZ_INTERATIVO_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QUIZ_INTERATIVO_URL', plugin_dir_url( __FILE__ ) );
 define( 'QUIZ_INTERATIVO_BASENAME', plugin_basename( __FILE__ ) );
@@ -119,11 +119,7 @@ final class Quiz_Interativo {
 	}
 
 	public function enqueue_frontend_assets(): void {
-		global $post;
-		if ( ! $post || ! has_shortcode( $post->post_content, 'quiz_interativo' ) ) {
-			return;
-		}
-
+		// Always load CSS (lightweight); JS only when shortcode is present.
 		wp_enqueue_style(
 			'quiz-interativo-frontend',
 			QUIZ_INTERATIVO_URL . 'assets/css/frontend.css',
@@ -131,13 +127,17 @@ final class Quiz_Interativo {
 			QUIZ_INTERATIVO_VERSION
 		);
 
-		wp_enqueue_script(
-			'quiz-interativo-frontend',
-			QUIZ_INTERATIVO_URL . 'assets/js/frontend.js',
-			array(),
-			QUIZ_INTERATIVO_VERSION,
-			true
-		);
+		// JS only on pages that actually have the shortcode.
+		global $post;
+		if ( $post && has_shortcode( $post->post_content, 'quiz_interativo' ) ) {
+			wp_enqueue_script(
+				'quiz-interativo-frontend',
+				QUIZ_INTERATIVO_URL . 'assets/js/frontend.js',
+				array(),
+				QUIZ_INTERATIVO_VERSION,
+				true
+			);
+		}
 	}
 }
 

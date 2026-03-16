@@ -47,6 +47,8 @@ class Quiz_Interativo_Shortcode {
 				'border_radius'   => 50,
 				'max_width'       => 700,
 				'box_shadow'      => '1',
+				'site_name'       => '',
+				'btn_height'      => 72,
 			)
 		);
 
@@ -102,15 +104,20 @@ class Quiz_Interativo_Shortcode {
 	private static function render_page( int $quiz_id, int $page_index, array $page, array $global_opts ): void {
 		$is_first   = 0 === $page_index;
 		$page_class = 'qi-page' . ( $is_first ? ' qi-page-active' : '' );
-		$page_style = 'background-color:' . esc_attr( $page['bg_color'] ?: $global_opts['bg_color'] ) . ';';
 
-		// Per-page CSS variables.
-		$btn_color       = $page['btn_color'] ?: $global_opts['btn_color'];
-		$btn_hover_color = $page['btn_hover_color'] ?: $global_opts['btn_hover_color'];
-		$btn_text_color  = $page['btn_text_color'] ?: $global_opts['btn_text_color'];
-		$page_style     .= '--qi-btn:' . esc_attr( $btn_color ) . ';';
-		$page_style     .= '--qi-btn-hover:' . esc_attr( $btn_hover_color ) . ';';
-		$page_style     .= '--qi-btn-text:' . esc_attr( $btn_text_color ) . ';';
+		$bg_color        = ! empty( $page['bg_color'] )        ? $page['bg_color']        : $global_opts['bg_color'];
+		$btn_color       = ! empty( $page['btn_color'] )       ? $page['btn_color']       : $global_opts['btn_color'];
+		$btn_hover_color = ! empty( $page['btn_hover_color'] ) ? $page['btn_hover_color'] : $global_opts['btn_hover_color'];
+		$btn_text_color  = ! empty( $page['btn_text_color'] )  ? $page['btn_text_color']  : $global_opts['btn_text_color'];
+		$btn_height      = ! empty( $page['btn_height'] )      ? (int) $page['btn_height'] : (int) $global_opts['btn_height'];
+		// Site name: per-page value wins; fall back to global setting.
+		$site_name       = ! empty( $page['site_name'] )       ? $page['site_name']       : $global_opts['site_name'];
+
+		$page_style  = 'background-color:' . esc_attr( $bg_color ) . ';';
+		$page_style .= '--qi-btn:'         . esc_attr( $btn_color ) . ';';
+		$page_style .= '--qi-btn-hover:'   . esc_attr( $btn_hover_color ) . ';';
+		$page_style .= '--qi-btn-text:'    . esc_attr( $btn_text_color ) . ';';
+		$page_style .= '--qi-btn-height:'  . esc_attr( $btn_height ) . 'px;';
 		?>
 		<div
 			class="<?php echo esc_attr( $page_class ); ?>"
@@ -118,8 +125,8 @@ class Quiz_Interativo_Shortcode {
 			style="<?php echo esc_attr( $page_style ); ?>"
 			aria-hidden="<?php echo $is_first ? 'false' : 'true'; ?>"
 		>
-			<?php if ( ! empty( $page['site_name'] ) ) : ?>
-			<div class="qi-site-name"><?php echo esc_html( $page['site_name'] ); ?></div>
+			<?php if ( ! empty( $site_name ) ) : ?>
+			<div class="qi-site-name"><?php echo esc_html( $site_name ); ?></div>
 			<?php endif; ?>
 
 			<?php if ( ! empty( $page['image'] ) ) : ?>

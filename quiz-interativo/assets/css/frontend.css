@@ -1,6 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles
-   Responsive, SEO-friendly, performant.
+   Quiz Interativo – Frontend Styles  v1.1.0
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -10,11 +9,14 @@
 	box-sizing: border-box;
 }
 
-/* --- Fullscreen overlay (body class added by JS) -------- */
+/* --- No-scroll (added by JS when quiz is shown) --------- */
+html.qi-noscroll,
 body.qi-noscroll {
 	overflow: hidden !important;
+	height: 100% !important;
 }
 
+/* --- Fullscreen overlay --------------------------------- */
 .qi-overlay {
 	position: fixed;
 	inset: 0;
@@ -22,82 +24,92 @@ body.qi-noscroll {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: rgba(0,0,0,0.55);
+	background: rgba(0, 0, 0, 0.55);
 	padding: 16px;
 }
 
-/* --- Quiz container ------------------------------------- */
+/* --- Quiz card ------------------------------------------ */
 .qi-quiz {
-	--qi-bg:         #ffffff;
-	--qi-btn:        #2ecc40;
-	--qi-btn-hover:  #27ae35;
-	--qi-btn-text:   #ffffff;
-	--qi-radius:     50px;
-	--qi-transition: 0.22s ease;
+	--qi-bg:          #ffffff;
+	--qi-btn:         #2ecc40;
+	--qi-btn-hover:   #27ae35;
+	--qi-btn-text:    #ffffff;
+	--qi-radius:      50px;
+	--qi-btn-height:  72px;
+	--qi-transition:  0.22s ease;
 
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 	width: 100%;
 	margin: 0 auto;
 	background: var(--qi-bg);
 	border-radius: 20px;
-	overflow: hidden;
+	/* IMPORTANT: overflow must be visible so emoji can spill outside the button */
+	overflow: visible;
 	position: relative;
-	/* Fullscreen mode: fill overlay but cap height to viewport */
 	max-height: calc(100dvh - 32px);
 	display: flex;
 	flex-direction: column;
 }
 
+/* Shadow applied separately – doesn't need overflow:hidden */
 .qi-shadow {
-	box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
 }
 
 /* --- Pages ---------------------------------------------- */
 .qi-page {
 	display: none;
-	animation: qiFadeIn 0.35s ease;
 	flex-direction: column;
-	/* Fill quiz height, scroll only inside if content overflows */
 	flex: 1;
 	overflow-y: auto;
 	overflow-x: hidden;
 	overscroll-behavior: contain;
+	border-radius: 20px; /* each page clips its own content */
 }
 
 .qi-page.qi-page-active {
 	display: flex;
+	animation: qiFadeIn 0.35s ease both;
+}
+
+.qi-page.qi-slide-in {
+	animation: qiSlideIn 0.32s ease both;
 }
 
 @keyframes qiFadeIn {
-	from { opacity: 0; transform: translateY(12px); }
+	from { opacity: 0; transform: translateY(14px); }
 	to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Slide-in animation for next pages */
-.qi-page.qi-slide-in {
-	animation: qiSlideIn 0.32s ease;
-}
-
 @keyframes qiSlideIn {
-	from { opacity: 0; transform: translateX(40px); }
+	from { opacity: 0; transform: translateX(45px); }
 	to   { opacity: 1; transform: translateX(0); }
 }
 
-/* --- Site name header ----------------------------------- */
+/* --- Site name ------------------------------------------ */
 .qi-site-name {
-	padding: 10px 16px 6px;
+	padding: 10px 20px 6px;
 	text-align: center;
-	font-size: 0.85rem;
+	font-size: 0.82rem;
 	font-weight: 700;
-	letter-spacing: 0.4px;
+	letter-spacing: 0.5px;
 	color: #475569;
 	background: var(--qi-bg);
+	/* Round the top corners to match the quiz card */
+	border-radius: 20px 20px 0 0;
 }
 
 /* --- Top image / banner --------------------------------- */
 .qi-page-image {
 	width: 100%;
 	line-height: 0;
+	/* Clip the image to the card shape */
+	overflow: hidden;
+}
+
+/* Image is first visible element → round its top corners */
+.qi-page-image:first-child {
+	border-radius: 20px 20px 0 0;
 }
 
 .qi-page-image img {
@@ -105,19 +117,20 @@ body.qi-noscroll {
 	height: auto;
 	display: block;
 	object-fit: cover;
-	max-height: 320px;
+	max-height: 300px;
 }
 
 /* --- Page content --------------------------------------- */
 .qi-page-content {
-	padding: 28px 24px 20px;
+	/* Extra right padding gives room for overflowing emoji */
+	padding: 24px 52px 20px 28px;
 	flex: 1;
 }
 
 /* --- Title & subtitle ----------------------------------- */
 .qi-page-title {
 	margin: 0 0 8px;
-	font-size: clamp(1.4rem, 4vw, 1.9rem);
+	font-size: clamp(1.35rem, 4vw, 1.85rem);
 	font-weight: 800;
 	text-align: center;
 	color: #1a1a1a;
@@ -125,8 +138,8 @@ body.qi-noscroll {
 }
 
 .qi-page-subtitle {
-	margin: 0 0 24px;
-	font-size: clamp(0.9rem, 2.5vw, 1rem);
+	margin: 0 0 22px;
+	font-size: clamp(0.88rem, 2.5vw, 1rem);
 	text-align: center;
 	color: #64748b;
 	line-height: 1.6;
@@ -140,21 +153,20 @@ body.qi-noscroll {
 	width: 100%;
 }
 
-/* --- Option button -------------------------------------- */
-/* The wrap is the overflow context so the emoji can spill outside */
+/* --- Option wrap ----------------------------------------
+   overflow:visible here lets the emoji escape the button   */
 .qi-option-wrap {
 	width: 100%;
 	position: relative;
-	/* Extra right padding to give room for the overflowing emoji */
-	padding-right: 0;
 }
 
+/* --- Option button -------------------------------------- */
 .qi-option {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 0 24px 0 28px;
+	padding: 0 20px 0 28px;
 	background: var(--qi-btn);
 	color: var(--qi-btn-text);
 	border: none;
@@ -164,36 +176,35 @@ body.qi-noscroll {
 	letter-spacing: 0.5px;
 	cursor: pointer;
 	transition:
-		background var(--qi-transition),
-		transform  var(--qi-transition),
-		box-shadow var(--qi-transition);
-	text-align: left;
+		background  var(--qi-transition),
+		transform   var(--qi-transition),
+		box-shadow  var(--qi-transition);
 	position: relative;
-	/* NO overflow:hidden — emoji must spill outside the button */
+	/* visible so the emoji can overflow outside the green pill */
 	overflow: visible;
 	user-select: none;
 	-webkit-user-select: none;
 }
 
-/* Hover sheen via a pseudo that respects border-radius */
+/* Sheen on hover (pseudo element, respects border-radius) */
 .qi-option::before {
 	content: '';
 	position: absolute;
 	inset: 0;
 	border-radius: inherit;
-	background: rgba(255,255,255,0);
-	transition: background 0.3s;
+	background: rgba(255, 255, 255, 0);
+	transition: background 0.25s;
 	pointer-events: none;
 }
 
 .qi-option:hover::before {
-	background: rgba(255,255,255,0.10);
+	background: rgba(255, 255, 255, 0.12);
 }
 
 .qi-option:hover {
 	background: var(--qi-btn-hover);
-	transform: translateY(-2px) scale(1.01);
-	box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+	transform: translateY(-3px) scale(1.015);
+	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
 }
 
 .qi-option:active {
@@ -202,79 +213,88 @@ body.qi-noscroll {
 }
 
 .qi-option:focus-visible {
-	outline: 3px solid rgba(255,255,255,0.85);
+	outline: 3px solid rgba(255, 255, 255, 0.85);
 	outline-offset: 3px;
 }
 
-/* Sizes */
+/* --- Button heights controlled by --qi-btn-height ------- */
 .qi-option.qi-btn-lg {
-	height: 72px;
+	height: var(--qi-btn-height, 72px);
 	font-size: clamp(1rem, 3vw, 1.25rem);
 }
 
 .qi-option.qi-btn-md {
-	height: 56px;
+	height: calc(var(--qi-btn-height, 72px) * 0.78);
 	font-size: clamp(0.9rem, 2.5vw, 1.05rem);
 }
 
 .qi-option.qi-btn-sm {
-	height: 44px;
+	height: calc(var(--qi-btn-height, 72px) * 0.6);
 	font-size: 0.9rem;
 }
 
-/* Text & icon */
+/* --- Button text ---------------------------------------- */
 .qi-option-text {
 	flex: 1;
 	text-align: center;
 }
 
+/* =========================================================
+   EMOJI ICON – overflows outside the button to the right
+   ========================================================= */
 .qi-option-icon {
-	/* Large emoji overflowing to the right — matches the reference image */
-	font-size: clamp(2rem, 6vw, 3rem);
+	font-size: clamp(2.2rem, 6vw, 3.2rem);
 	line-height: 1;
 	flex-shrink: 0;
 	display: inline-block;
-	/* Shift right so the emoji sits half-outside the button */
-	margin-left: 10px;
-	margin-right: -18px;
-	/* Float animation staggered by JS */
-	animation: qiIconFloat 2.8s ease-in-out infinite;
-	transform-origin: center center;
-	will-change: transform;
-	/* Sit on top of everything (z-index needed when overflow:visible) */
+
+	/* Push emoji so it sits half-outside the button's right end */
+	margin-left: 8px;
+	margin-right: -38px;
+
+	/* Sit above other elements */
 	position: relative;
-	z-index: 1;
+	z-index: 2;
+
+	/* Idle floating animation – delay set per-icon by JS */
+	animation: qiIconFloat 2.6s ease-in-out infinite both;
+	transform-origin: center 70%;
+	will-change: transform;
 }
 
-/* Hover: button lifts and icon bounces */
-.qi-option:hover .qi-option-icon {
-	animation: qiIconBounce 0.55s cubic-bezier(.36,.07,.19,.97) forwards;
-}
+/* --- Emoji animations ------------------------------------ */
 
-/* Press: icon pops */
-.qi-option:active .qi-option-icon {
-	animation: qiIconPop 0.28s ease forwards;
-}
-
-/* --- Emoji keyframes ------------------------------------ */
+/* Idle: gentle float + wobble */
 @keyframes qiIconFloat {
-	0%, 100% { transform: translateY(0)    rotate(0deg)  scale(1);    }
-	25%       { transform: translateY(-5px) rotate(-5deg) scale(1.06); }
-	65%       { transform: translateY(-2px) rotate(4deg)  scale(1.03); }
+	0%   { transform: translateY(0)    rotate(0deg)   scale(1);    }
+	20%  { transform: translateY(-6px) rotate(-6deg)  scale(1.08); }
+	50%  { transform: translateY(-3px) rotate(4deg)   scale(1.04); }
+	75%  { transform: translateY(-7px) rotate(-3deg)  scale(1.06); }
+	100% { transform: translateY(0)    rotate(0deg)   scale(1);    }
+}
+
+/* Hover: dramatic bounce */
+.qi-option:hover .qi-option-icon {
+	animation: qiIconBounce 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes qiIconBounce {
-	0%   { transform: scale(1)    translateY(0)   rotate(0deg);   }
-	20%  { transform: scale(1.4)  translateY(-8px) rotate(-10deg); }
-	45%  { transform: scale(0.88) translateY(3px)  rotate(6deg);   }
-	65%  { transform: scale(1.18) translateY(-4px) rotate(-4deg);  }
-	80%  { transform: scale(0.96) translateY(1px)  rotate(2deg);   }
-	100% { transform: scale(1)    translateY(0)    rotate(0deg);   }
+	0%   { transform: scale(1)    translateY(0)    rotate(0deg);    }
+	18%  { transform: scale(1.45) translateY(-10px) rotate(-12deg); }
+	40%  { transform: scale(0.85) translateY(4px)   rotate(7deg);   }
+	62%  { transform: scale(1.22) translateY(-5px)  rotate(-5deg);  }
+	80%  { transform: scale(0.95) translateY(2px)   rotate(3deg);   }
+	100% { transform: scale(1)    translateY(0)     rotate(0deg);   }
+}
+
+/* Click: spin-pop */
+.qi-option:active .qi-option-icon {
+	animation: qiIconPop 0.3s ease both;
 }
 
 @keyframes qiIconPop {
-	0%   { transform: scale(1);    }
-	45%  { transform: scale(1.55) rotate(18deg);  }
+	0%   { transform: scale(1)    rotate(0deg);   }
+	45%  { transform: scale(1.6)  rotate(20deg);  }
 	100% { transform: scale(1)    rotate(0deg);   }
 }
 
@@ -287,22 +307,22 @@ body.qi-noscroll {
 
 /* --- Footer / disclaimer -------------------------------- */
 .qi-page-footer {
-	padding: 16px 24px 20px;
-	border-top: 1px solid rgba(0,0,0,0.06);
+	padding: 14px 24px 18px;
+	border-top: 1px solid rgba(0, 0, 0, 0.06);
 	margin-top: auto;
 }
 
 .qi-disclaimer {
-	font-size: 0.72rem;
+	font-size: 0.71rem;
 	color: #94a3b8;
 	text-align: center;
-	line-height: 1.6;
+	line-height: 1.65;
 	margin: 0 0 8px;
 }
 
 .qi-policy-links {
 	text-align: center;
-	font-size: 0.75rem;
+	font-size: 0.74rem;
 }
 
 .qi-policy-links a {
@@ -315,11 +335,12 @@ body.qi-noscroll {
 	color: #1e293b;
 }
 
-/* --- Progress indicator (optional) --------------------- */
+/* --- Progress bar --------------------------------------- */
 .qi-progress {
 	height: 4px;
-	background: rgba(0,0,0,0.06);
+	background: rgba(0, 0, 0, 0.07);
 	overflow: hidden;
+	border-radius: 20px 20px 0 0;
 }
 
 .qi-progress-bar {
@@ -328,51 +349,30 @@ body.qi-noscroll {
 	transition: width 0.4s ease;
 }
 
-/* --- Inactive overlay (admin preview only) ------------- */
-.qi-quiz[data-inactive] {
-	position: relative;
-}
-
-.qi-quiz[data-inactive]::before {
-	content: 'Quiz Inativo';
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	background: rgba(0,0,0,0.6);
-	color: #fff;
-	font-size: 11px;
-	padding: 3px 8px;
-	border-radius: 20px;
-	z-index: 10;
-}
-
 /* --- Responsive ----------------------------------------- */
 @media (max-width: 600px) {
 	.qi-page-content {
-		padding: 20px 16px 16px;
+		padding: 18px 48px 16px 20px;
 	}
 
 	.qi-page-footer {
-		padding: 12px 16px 16px;
-	}
-
-	.qi-option.qi-btn-lg {
-		height: 62px;
+		padding: 10px 16px 14px;
 	}
 
 	.qi-option {
-		padding: 0 16px;
+		padding: 0 16px 0 20px;
 	}
 
 	.qi-option-icon {
-		font-size: 1.6rem;
+		font-size: 1.9rem;
+		margin-right: -28px;
 	}
 }
 
 @media (max-width: 380px) {
-	.qi-option.qi-btn-lg {
-		height: 54px;
-		font-size: 0.95rem;
+	.qi-option-icon {
+		font-size: 1.6rem;
+		margin-right: -20px;
 	}
 }
 
