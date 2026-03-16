@@ -141,8 +141,12 @@ body.qi-noscroll {
 }
 
 /* --- Option button -------------------------------------- */
+/* The wrap is the overflow context so the emoji can spill outside */
 .qi-option-wrap {
 	width: 100%;
+	position: relative;
+	/* Extra right padding to give room for the overflowing emoji */
+	padding-right: 0;
 }
 
 .qi-option {
@@ -150,7 +154,7 @@ body.qi-noscroll {
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 0 24px;
+	padding: 0 24px 0 28px;
 	background: var(--qi-btn);
 	color: var(--qi-btn-text);
 	border: none;
@@ -165,46 +169,47 @@ body.qi-noscroll {
 		box-shadow var(--qi-transition);
 	text-align: left;
 	position: relative;
-	overflow: hidden;
-	/* Prevent text selection on rapid clicks */
+	/* NO overflow:hidden — emoji must spill outside the button */
+	overflow: visible;
 	user-select: none;
 	-webkit-user-select: none;
 }
 
-/* Ripple effect */
-.qi-option::after {
+/* Hover sheen via a pseudo that respects border-radius */
+.qi-option::before {
 	content: '';
 	position: absolute;
 	inset: 0;
+	border-radius: inherit;
 	background: rgba(255,255,255,0);
 	transition: background 0.3s;
+	pointer-events: none;
 }
 
-.qi-option:hover::after {
-	background: rgba(255,255,255,0.08);
+.qi-option:hover::before {
+	background: rgba(255,255,255,0.10);
 }
 
 .qi-option:hover {
 	background: var(--qi-btn-hover);
 	transform: translateY(-2px) scale(1.01);
-	box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+	box-shadow: 0 8px 24px rgba(0,0,0,0.18);
 }
 
 .qi-option:active {
-	transform: scale(0.98);
+	transform: scale(0.97);
 	box-shadow: none;
 }
 
-/* Focus visible for keyboard navigation */
 .qi-option:focus-visible {
-	outline: 3px solid rgba(255,255,255,0.8);
+	outline: 3px solid rgba(255,255,255,0.85);
 	outline-offset: 3px;
 }
 
 /* Sizes */
 .qi-option.qi-btn-lg {
 	height: 72px;
-	font-size: clamp(1rem, 3vw, 1.2rem);
+	font-size: clamp(1rem, 3vw, 1.25rem);
 }
 
 .qi-option.qi-btn-md {
@@ -224,47 +229,53 @@ body.qi-noscroll {
 }
 
 .qi-option-icon {
-	font-size: clamp(1.4rem, 4vw, 2rem);
+	/* Large emoji overflowing to the right — matches the reference image */
+	font-size: clamp(2rem, 6vw, 3rem);
 	line-height: 1;
 	flex-shrink: 0;
-	margin-left: 8px;
-	margin-right: -8px;
 	display: inline-block;
-	/* Idle float animation – staggered via inline style delay */
-	animation: qiIconFloat 3s ease-in-out infinite;
-	transform-origin: center bottom;
+	/* Shift right so the emoji sits half-outside the button */
+	margin-left: 10px;
+	margin-right: -18px;
+	/* Float animation staggered by JS */
+	animation: qiIconFloat 2.8s ease-in-out infinite;
+	transform-origin: center center;
 	will-change: transform;
+	/* Sit on top of everything (z-index needed when overflow:visible) */
+	position: relative;
+	z-index: 1;
 }
 
-/* Hover: icon bounces */
+/* Hover: button lifts and icon bounces */
 .qi-option:hover .qi-option-icon {
-	animation: qiIconBounce 0.5s ease forwards;
+	animation: qiIconBounce 0.55s cubic-bezier(.36,.07,.19,.97) forwards;
 }
 
-/* Click: icon spin-pop */
+/* Press: icon pops */
 .qi-option:active .qi-option-icon {
-	animation: qiIconPop 0.3s ease forwards;
+	animation: qiIconPop 0.28s ease forwards;
 }
 
 /* --- Emoji keyframes ------------------------------------ */
 @keyframes qiIconFloat {
-	0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-	30%       { transform: translateY(-4px) rotate(-4deg) scale(1.05); }
-	60%       { transform: translateY(-2px) rotate(3deg) scale(1.02); }
+	0%, 100% { transform: translateY(0)    rotate(0deg)  scale(1);    }
+	25%       { transform: translateY(-5px) rotate(-5deg) scale(1.06); }
+	65%       { transform: translateY(-2px) rotate(4deg)  scale(1.03); }
 }
 
 @keyframes qiIconBounce {
-	0%   { transform: scale(1) translateY(0); }
-	30%  { transform: scale(1.35) translateY(-6px) rotate(-8deg); }
-	55%  { transform: scale(0.9) translateY(2px) rotate(4deg); }
-	75%  { transform: scale(1.15) translateY(-3px) rotate(-3deg); }
-	100% { transform: scale(1) translateY(0) rotate(0deg); }
+	0%   { transform: scale(1)    translateY(0)   rotate(0deg);   }
+	20%  { transform: scale(1.4)  translateY(-8px) rotate(-10deg); }
+	45%  { transform: scale(0.88) translateY(3px)  rotate(6deg);   }
+	65%  { transform: scale(1.18) translateY(-4px) rotate(-4deg);  }
+	80%  { transform: scale(0.96) translateY(1px)  rotate(2deg);   }
+	100% { transform: scale(1)    translateY(0)    rotate(0deg);   }
 }
 
 @keyframes qiIconPop {
-	0%   { transform: scale(1); }
-	50%  { transform: scale(1.5) rotate(15deg); }
-	100% { transform: scale(1) rotate(0deg); }
+	0%   { transform: scale(1);    }
+	45%  { transform: scale(1.55) rotate(18deg);  }
+	100% { transform: scale(1)    rotate(0deg);   }
 }
 
 /* --- Loading state -------------------------------------- */

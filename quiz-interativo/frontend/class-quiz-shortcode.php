@@ -118,7 +118,7 @@ class Quiz_Interativo_Shortcode {
 			style="<?php echo esc_attr( $page_style ); ?>"
 			aria-hidden="<?php echo $is_first ? 'false' : 'true'; ?>"
 		>
-			<?php if ( ! empty( $page['show_site_name'] ) && ! empty( $page['site_name'] ) ) : ?>
+			<?php if ( ! empty( $page['site_name'] ) ) : ?>
 			<div class="qi-site-name"><?php echo esc_html( $page['site_name'] ); ?></div>
 			<?php endif; ?>
 

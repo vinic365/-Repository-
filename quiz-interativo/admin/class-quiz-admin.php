@@ -248,7 +248,6 @@ class Quiz_Interativo_Admin {
 			'title'              => '',
 			'subtitle'           => '',
 			'site_name'          => '',
-			'show_site_name'     => '',
 			'image'              => '',
 			'bg_color'           => '#ffffff',
 			'btn_color'          => '#2ecc40',
@@ -301,14 +300,8 @@ class Quiz_Interativo_Admin {
 					<div class="qi-row">
 						<div class="qi-col">
 							<label><?php esc_html_e( 'Nome do Site (acima da imagem)', 'quiz-interativo' ); ?></label>
-							<div style="display:flex;align-items:center;gap:10px;">
-								<input type="text" class="qi-input qi-field-site-name" value="<?php echo esc_attr( $page['site_name'] ); ?>" placeholder="meusite.com" style="flex:1">
-								<label class="qi-toggle" title="<?php esc_attr_e( 'Exibir nome do site', 'quiz-interativo' ); ?>">
-									<input type="checkbox" class="qi-field-show-site-name" <?php checked( $page['show_site_name'], '1' ); ?>>
-									<span class="qi-toggle-slider"></span>
-								</label>
-								<span class="qi-hint" style="margin:0"><?php esc_html_e( 'Exibir', 'quiz-interativo' ); ?></span>
-							</div>
+							<input type="text" class="qi-input qi-field-site-name" value="<?php echo esc_attr( $page['site_name'] ); ?>" placeholder="meusite.com">
+							<span class="qi-hint"><?php esc_html_e( 'Deixe em branco para ocultar.', 'quiz-interativo' ); ?></span>
 						</div>
 					</div>
 					<div class="qi-row">
