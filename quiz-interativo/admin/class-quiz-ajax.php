@@ -154,7 +154,6 @@ class Quiz_Interativo_Ajax {
 			$clean_page = array(
 				'title'      => sanitize_text_field( $page['title'] ?? '' ),
 				'subtitle'   => sanitize_text_field( $page['subtitle'] ?? '' ),
-				'site_name'  => sanitize_text_field( $page['site_name'] ?? '' ),
 				'btn_height' => min( 140, max( 44, absint( $page['btn_height'] ?? 72 ) ) ),
 				'image'      => esc_url_raw( $page['image'] ?? '' ),
 				'bg_color'        => sanitize_hex_color( $page['bg_color'] ?? '' ) ?: '',

@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.1.4
+   Quiz Interativo – Frontend Styles  v1.2.0
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -96,27 +96,6 @@ body.qi-noscroll {
 	to   { opacity: 1; transform: translateX(0); }
 }
 
-/* --- Site name ------------------------------------------ */
-.qi-site-name {
-	display: -webkit-flex;
-	display: flex;
-	-webkit-justify-content: center;
-	justify-content: center;
-	-webkit-align-items: center;
-	align-items: center;
-	-webkit-align-self: stretch;
-	align-self: stretch;
-	width: 100%;
-	box-sizing: border-box;
-	padding: 10px 20px 6px;
-	font-size: 0.82rem;
-	font-weight: 700;
-	letter-spacing: 0.5px;
-	color: #475569;
-	background: var(--qi-bg);
-	border-radius: 20px 20px 0 0;
-}
-
 /* --- Top image / banner --------------------------------- */
 .qi-page-image {
 	width: 100%;
@@ -189,10 +168,17 @@ body.qi-noscroll {
 	color: var(--qi-btn-text);
 	border: none;
 	border-radius: var(--qi-radius);
+	/* <button> does not inherit font from ancestors in many browsers;
+	   font-family:inherit forces the system font stack from .qi-quiz */
+	font-family: inherit;
 	font-weight: 800;
 	font-size: clamp(1rem, 3vw, 1.2rem);
 	letter-spacing: 0.5px;
 	cursor: pointer;
+	/* Disable native button chrome on Android – native rendering
+	   suppresses child element CSS animations in some WebViews */
+	-webkit-appearance: none;
+	appearance: none;
 	/* Eliminates 300ms tap delay on Android and prevents double-tap zoom */
 	touch-action: manipulation;
 	transition:
@@ -217,14 +203,20 @@ body.qi-noscroll {
 	pointer-events: none;
 }
 
-.qi-option:hover::before {
-	background: rgba(255, 255, 255, 0.12);
-}
+/* Hover effects – only on true pointer devices.
+   On Android/iOS :hover is "sticky" after tap; the transform creates a
+   new stacking context that prevents child icon animation from compositing
+   properly, and the visual state stays permanently "elevated".            */
+@media (hover: hover) and (pointer: fine) {
+	.qi-option:hover::before {
+		background: rgba(255, 255, 255, 0.12);
+	}
 
-.qi-option:hover {
-	background: var(--qi-btn-hover);
-	transform: translateY(-3px) scale(1.015);
-	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+	.qi-option:hover {
+		background: var(--qi-btn-hover);
+		transform: translateY(-3px) scale(1.015);
+		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+	}
 }
 
 .qi-option:active {
@@ -279,13 +271,10 @@ body.qi-noscroll {
 	position: relative;
 	z-index: 2;
 
-	/* GPU compositing layer – do NOT set a static transform here.
-	   A static transform: translate3d(0,0,0) conflicts with the keyframe
-	   animation on Android Chrome/WebView and prevents it from starting.
-	   will-change:transform is sufficient to promote the element to its
-	   own compositor layer without interfering with the animation. */
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
+	/* GPU compositing – will-change alone is enough.
+	   Do NOT add transform:translate3d(0,0,0) or backface-visibility:hidden
+	   here. Both conflict with @keyframes animation on Android Chrome and
+	   Samsung Internet, preventing the animation from starting.            */
 	will-change: transform;
 
 	/* Idle floating animation – delay staggered per-icon by JS */
@@ -349,8 +338,15 @@ body.qi-noscroll {
 	100% { transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
 }
 
-/* Click / tap: spin-pop */
-.qi-option:active .qi-option-icon,
+/* Click pop – only on pointer devices (:active can be sticky on Samsung) */
+@media (hover: hover) and (pointer: fine) {
+	.qi-option:active .qi-option-icon {
+		-webkit-animation: qiIconPop 0.28s ease both;
+		animation: qiIconPop 0.28s ease both;
+	}
+}
+
+/* JS-triggered pop class */
 .qi-option-icon.qi-icon-pop {
 	-webkit-animation: qiIconPop 0.28s ease both;
 	animation: qiIconPop 0.28s ease both;
@@ -382,7 +378,7 @@ body.qi-noscroll {
 }
 
 .qi-disclaimer {
-	font-size: 0.71rem;
+	font-size: 0.62rem;
 	color: #94a3b8;
 	text-align: center;
 	line-height: 1.65;

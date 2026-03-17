@@ -247,7 +247,6 @@ class Quiz_Interativo_Admin {
 		$defaults = array(
 			'title'           => '',
 			'subtitle'        => '',
-			'site_name'       => '',
 			'image'           => '',
 			'bg_color'        => '#ffffff',
 			'btn_color'       => '#2ecc40',
@@ -296,13 +295,6 @@ class Quiz_Interativo_Admin {
 						<div class="qi-col">
 							<label><?php esc_html_e( 'Subtítulo', 'quiz-interativo' ); ?></label>
 							<input type="text" class="qi-input qi-field-subtitle" value="<?php echo esc_attr( $page['subtitle'] ); ?>" placeholder="<?php esc_attr_e( 'Ao clicar você continua em nosso site...', 'quiz-interativo' ); ?>">
-						</div>
-					</div>
-					<div class="qi-row">
-						<div class="qi-col">
-							<label><?php esc_html_e( 'Nome do Site (acima da imagem)', 'quiz-interativo' ); ?></label>
-							<input type="text" class="qi-input qi-field-site-name" value="<?php echo esc_attr( $page['site_name'] ); ?>" placeholder="meusite.com">
-							<span class="qi-hint"><?php esc_html_e( 'Deixe em branco para ocultar.', 'quiz-interativo' ); ?></span>
 						</div>
 					</div>
 					<div class="qi-row">
@@ -552,7 +544,6 @@ class Quiz_Interativo_Admin {
 				'border_radius'   => absint( $_POST['qi_border_radius'] ?? 50 ),
 				'max_width'       => absint( $_POST['qi_max_width'] ?? 700 ),
 				'box_shadow'      => isset( $_POST['qi_box_shadow'] ) ? '1' : '0',
-				'site_name'       => sanitize_text_field( $_POST['qi_site_name'] ?? '' ),
 				'btn_height'      => min( 140, max( 44, absint( $_POST['qi_btn_height'] ?? 72 ) ) ),
 			);
 			update_option( 'quiz_interativo_options', $options );
@@ -569,7 +560,6 @@ class Quiz_Interativo_Admin {
 				'border_radius'   => 50,
 				'max_width'       => 700,
 				'box_shadow'      => '1',
-				'site_name'       => '',
 				'btn_height'      => 72,
 			)
 		);
@@ -638,18 +628,6 @@ class Quiz_Interativo_Admin {
 								<input type="checkbox" name="qi_box_shadow" <?php checked( $opts['box_shadow'], '1' ); ?>>
 								<span class="qi-toggle-slider"></span>
 							</label>
-						</div>
-					</div>
-				</div>
-
-				<div class="qi-card">
-					<h2><?php esc_html_e( 'Nome do Site', 'quiz-interativo' ); ?></h2>
-					<p class="qi-hint"><?php esc_html_e( 'Exibido acima da imagem em todos os quizzes. Cada página do quiz pode sobrescrever com seu próprio valor.', 'quiz-interativo' ); ?></p>
-					<div class="qi-row">
-						<div class="qi-col">
-							<label><?php esc_html_e( 'Nome do Site / Domínio', 'quiz-interativo' ); ?></label>
-							<input type="text" name="qi_site_name" class="qi-input" value="<?php echo esc_attr( $opts['site_name'] ); ?>" placeholder="meusite.com">
-							<span class="qi-hint"><?php esc_html_e( 'Deixe em branco para não exibir.', 'quiz-interativo' ); ?></span>
 						</div>
 					</div>
 				</div>
