@@ -93,6 +93,9 @@ class Quiz_Interativo_Shortcode {
 		echo '--qi-btn-hover:' . esc_attr( $global_opts['btn_hover_color'] ) . ';';
 		echo '--qi-btn-text:' . esc_attr( $global_opts['btn_text_color'] ) . ';';
 		echo '--qi-radius:' . esc_attr( $global_opts['border_radius'] ) . 'px;';
+		// btn_height must be set here so the global admin setting takes effect.
+		// Without this, the CSS file's hardcoded 72px value is used instead.
+		echo '--qi-btn-height:' . absint( $global_opts['btn_height'] ) . 'px;';
 		echo '}';
 		echo '</style>';
 	}

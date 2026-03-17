@@ -159,12 +159,24 @@
 		$currentPage.classList.remove('qi-page-active');
 		$currentPage.setAttribute('aria-hidden', 'true');
 
+		// Restagger emoji delays BEFORE the page becomes visible.
+		// Must happen while display:none so animations haven't started yet;
+		// setting animationDelay on an already-running animation has no effect.
+		$nextPage.querySelectorAll('.qi-option-icon').forEach(function (icon, i) {
+			var delay = '-' + (i * 0.65) + 's';
+			icon.style.webkitAnimationDelay = delay;
+			icon.style.animationDelay = delay;
+		});
+
 		// Show next with animation.
 		$nextPage.classList.add('qi-page-active', 'qi-slide-in');
 		$nextPage.setAttribute('aria-hidden', 'false');
 
-		// Remove animation class after it ends.
-		$nextPage.addEventListener('animationend', function handler() {
+		// Remove slide-in class once the PAGE's own transition ends.
+		// Check animationName so bubbled icon animationend events don't
+		// trigger this handler prematurely.
+		$nextPage.addEventListener('animationend', function handler(e) {
+			if (e.target !== $nextPage) return;
 			$nextPage.classList.remove('qi-slide-in');
 			$nextPage.removeEventListener('animationend', handler);
 		});
@@ -177,13 +189,6 @@
 			quiz._progressBar.style.width = pct + '%';
 			quiz._progressWrap.setAttribute('aria-valuenow', String(index + 1));
 		}
-
-		// Restagger emoji delays for new page.
-		$nextPage.querySelectorAll('.qi-option-icon').forEach(function (icon, i) {
-			var delay = '-' + (i * 0.65) + 's';
-			icon.style.webkitAnimationDelay = delay;
-			icon.style.animationDelay = delay;
-		});
 	}
 
 	// Init on DOM ready.
