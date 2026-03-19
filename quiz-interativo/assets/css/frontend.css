@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.2.0
+   Quiz Interativo – Frontend Styles  v1.2.1
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -69,8 +69,11 @@ body.qi-noscroll {
 
 .qi-page.qi-page-active {
 	display: flex;
-	-webkit-animation: qiFadeIn 0.35s ease both;
-	animation: qiFadeIn 0.35s ease both;
+	/* No animation here – qiFadeIn on qi-page-active causes a glitch:
+	   after qi-slide-in is removed via animationend, the browser detects
+	   the animation property changed back to qiFadeIn and restarts it,
+	   causing a flash (opacity:0 → re-fade) after every page transition.
+	   Page transitions are handled exclusively by .qi-slide-in below.   */
 }
 
 .qi-page.qi-slide-in {

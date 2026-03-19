@@ -85,14 +85,28 @@
 			btn.addEventListener('touchstart', function () {
 				var icon = btn.querySelector('.qi-option-icon');
 				if (!icon) return;
+
+				// Remove any previous animationend listener before adding a new one.
+				// Without this, each tap that ends before the 0.6s animation completes
+				// (e.g. when navigation happens) leaves an orphaned listener on the icon.
+				// On the next visit to this page the count grows, causing memory leaks and
+				// incorrect "qi-icon-bounce" removal at unexpected times.
+				if (icon._bounceHandler) {
+					icon.removeEventListener('animationend', icon._bounceHandler);
+					icon._bounceHandler = null;
+				}
+
 				icon.classList.remove('qi-icon-bounce', 'qi-icon-pop');
 				// Force reflow so removing + re-adding class restarts animation.
 				void icon.offsetWidth;
 				icon.classList.add('qi-icon-bounce');
-				icon.addEventListener('animationend', function handler() {
+
+				icon._bounceHandler = function () {
 					icon.classList.remove('qi-icon-bounce');
-					icon.removeEventListener('animationend', handler);
-				});
+					icon.removeEventListener('animationend', icon._bounceHandler);
+					icon._bounceHandler = null;
+				};
+				icon.addEventListener('animationend', icon._bounceHandler);
 			}, { passive: true });
 
 			// Keyboard: Enter / Space
@@ -155,6 +169,9 @@
 
 		if (!$nextPage) return;
 
+		// Guard: $currentPage must exist (pages array could theoretically be stale).
+		if (!$currentPage) return;
+
 		// Hide current.
 		$currentPage.classList.remove('qi-page-active');
 		$currentPage.setAttribute('aria-hidden', 'true');
@@ -172,14 +189,23 @@
 		$nextPage.classList.add('qi-page-active', 'qi-slide-in');
 		$nextPage.setAttribute('aria-hidden', 'false');
 
-		// Remove slide-in class once the PAGE's own transition ends.
-		// Check animationName so bubbled icon animationend events don't
-		// trigger this handler prematurely.
-		$nextPage.addEventListener('animationend', function handler(e) {
+		// Remove any previous slide-in listener before adding a new one.
+		// Without this, navigating to the same page multiple times stacks listeners:
+		// each round-trip (1→2→1→2) adds another handler to page 2, causing
+		// premature qi-slide-in removal and growing memory leaks.
+		if ($nextPage._slideHandler) {
+			$nextPage.removeEventListener('animationend', $nextPage._slideHandler);
+		}
+		$nextPage._slideHandler = function (e) {
+			// Filter by target to ignore animationend events bubbled from child icons,
+			// and by animationName to ensure we only react to the slide-in animation.
 			if (e.target !== $nextPage) return;
+			if (e.animationName !== 'qiSlideIn') return;
 			$nextPage.classList.remove('qi-slide-in');
-			$nextPage.removeEventListener('animationend', handler);
-		});
+			$nextPage.removeEventListener('animationend', $nextPage._slideHandler);
+			$nextPage._slideHandler = null;
+		};
+		$nextPage.addEventListener('animationend', $nextPage._slideHandler);
 
 		quiz._currentPage = index;
 

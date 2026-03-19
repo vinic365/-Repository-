@@ -3,7 +3,7 @@
  * Plugin Name: Quiz Interativo
  * Plugin URI:  https://meusite.com/quiz-interativo
  * Description: Crie quizzes interativos em formato de funil para páginas de conversão. Insira com o shortcode [quiz_interativo id="1"].
- * Version:     1.2.0
+ * Version:     1.2.1
  * Author:      Seu Nome
  * Author URI:  https://meusite.com
  * License:     GPL-2.0+
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUIZ_INTERATIVO_VERSION', '1.2.0' );
+define( 'QUIZ_INTERATIVO_VERSION', '1.2.1' );
 define( 'QUIZ_INTERATIVO_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QUIZ_INTERATIVO_URL', plugin_dir_url( __FILE__ ) );
 define( 'QUIZ_INTERATIVO_BASENAME', plugin_basename( __FILE__ ) );
