@@ -24,10 +24,6 @@
 
 		if (!pages.length) return;
 
-		// Lock page scroll – quiz is fixed/fullscreen.
-		document.documentElement.classList.add('qi-noscroll');
-		document.body.classList.add('qi-noscroll');
-
 		// Ensure only first page is active on load.
 		pages.forEach(function (page, i) {
 			if (i === 0) {
