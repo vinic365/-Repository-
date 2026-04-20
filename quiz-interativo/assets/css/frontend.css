@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.2.1
+   Quiz Interativo – Frontend Styles  v1.2.2
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -25,7 +25,7 @@ body.qi-noscroll {
 	align-items: center;
 	justify-content: center;
 	background: rgba(0, 0, 0, 0.55);
-	padding: 16px;
+	padding: 12px;
 }
 
 /* --- Quiz card ------------------------------------------ */
@@ -46,9 +46,12 @@ body.qi-noscroll {
 	/* IMPORTANT: overflow must be visible so emoji can spill outside the button */
 	overflow: visible;
 	position: relative;
-	max-height: calc(100dvh - 32px);
+	/* 100vh fallback for browsers without dvh support (older iOS/Android) */
+	max-height: calc(100vh - 24px);
+	max-height: calc(100dvh - 24px);
 	display: flex;
 	flex-direction: column;
+	min-height: 0;
 }
 
 /* Shadow applied separately – doesn't need overflow:hidden */
@@ -60,9 +63,9 @@ body.qi-noscroll {
 .qi-page {
 	display: none;
 	flex-direction: column;
-	flex: 1;
-	overflow-y: auto;
-	overflow-x: hidden;
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: hidden;
 	overscroll-behavior: contain;
 	border-radius: 20px; /* each page clips its own content */
 }
@@ -117,39 +120,44 @@ body.qi-noscroll {
 	height: auto;
 	display: block;
 	object-fit: cover;
-	max-height: 300px;
+	/* Responsive: shrinks on short viewports, grows on tall desktops */
+	max-height: clamp(120px, 26vh, 260px);
 }
 
 /* --- Page content --------------------------------------- */
 .qi-page-content {
 	/* Extra right padding gives room for overflowing emoji */
-	padding: 24px 52px 20px 28px;
-	flex: 1;
+	padding: 16px 48px 12px 24px;
+	flex: 1 1 auto;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 /* --- Title & subtitle ----------------------------------- */
 .qi-page-title {
-	margin: 0 0 8px;
-	font-size: clamp(1.35rem, 4vw, 1.85rem);
+	margin: 0 0 6px;
+	font-size: clamp(1.2rem, 3.6vw, 1.75rem);
 	font-weight: 800;
 	text-align: center;
 	color: #1a1a1a;
-	line-height: 1.25;
+	line-height: 1.22;
 }
 
 .qi-page-subtitle {
-	margin: 0 0 22px;
-	font-size: clamp(0.88rem, 2.5vw, 1rem);
+	margin: 0 0 14px;
+	font-size: clamp(0.85rem, 2.4vw, 0.98rem);
 	text-align: center;
 	color: #64748b;
-	line-height: 1.6;
+	line-height: 1.5;
 }
 
 /* --- Options list --------------------------------------- */
 .qi-options {
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 10px;
 	width: 100%;
 }
 
@@ -375,22 +383,23 @@ body.qi-noscroll {
 
 /* --- Footer / disclaimer -------------------------------- */
 .qi-page-footer {
-	padding: 14px 24px 18px;
+	padding: 8px 24px 12px;
 	border-top: 1px solid rgba(0, 0, 0, 0.06);
 	margin-top: auto;
+	flex-shrink: 0;
 }
 
 .qi-disclaimer {
-	font-size: 0.62rem;
+	font-size: 0.6rem;
 	color: #94a3b8;
 	text-align: center;
-	line-height: 1.65;
-	margin: 0 0 8px;
+	line-height: 1.4;
+	margin: 0 0 4px;
 }
 
 .qi-policy-links {
 	text-align: center;
-	font-size: 0.74rem;
+	font-size: 0.72rem;
 }
 
 .qi-policy-links a {
@@ -419,12 +428,37 @@ body.qi-noscroll {
 
 /* --- Responsive ----------------------------------------- */
 @media (max-width: 600px) {
+	.qi-overlay {
+		padding: 8px;
+	}
+
+	.qi-quiz {
+		max-height: calc(100vh - 16px);
+		max-height: calc(100dvh - 16px);
+	}
+
+	.qi-page-image img {
+		max-height: clamp(100px, 22vh, 200px);
+	}
+
 	.qi-page-content {
-		padding: 18px 48px 16px 20px;
+		padding: 12px 44px 10px 18px;
+	}
+
+	.qi-page-title {
+		margin: 0 0 4px;
+	}
+
+	.qi-page-subtitle {
+		margin: 0 0 10px;
+	}
+
+	.qi-options {
+		gap: 8px;
 	}
 
 	.qi-page-footer {
-		padding: 10px 16px 14px;
+		padding: 6px 16px 10px;
 	}
 
 	.qi-option {
@@ -441,6 +475,25 @@ body.qi-noscroll {
 	.qi-option-icon {
 		font-size: 1.6rem;
 		margin-right: -20px;
+	}
+}
+
+/* Short viewports (landscape phones / small screens) — shrink further */
+@media (max-height: 700px) {
+	.qi-page-image img {
+		max-height: clamp(80px, 18vh, 160px);
+	}
+
+	.qi-page-content {
+		padding: 10px 44px 8px 18px;
+	}
+
+	.qi-options {
+		gap: 8px;
+	}
+
+	.qi-option.qi-btn-lg {
+		min-height: calc(var(--qi-btn-height, 72px) * 0.82);
 	}
 }
 
