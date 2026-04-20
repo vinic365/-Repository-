@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.2
+   Quiz Interativo – Frontend Styles  v1.3.3
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -124,7 +124,8 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 0 18px 0 24px;
+	/* Symmetric padding keeps emoji clearly inside the pill on both sides */
+	padding: 0 24px;
 	background: var(--qi-btn);
 	color: var(--qi-btn-text);
 	border: none;
@@ -337,7 +338,7 @@
 	}
 
 	.qi-option {
-		padding: 0 16px 0 20px;
+		padding: 0 20px;
 	}
 
 	.qi-option-text {
@@ -351,7 +352,7 @@
 
 @media (max-width: 380px) {
 	.qi-option {
-		padding: 0 12px 0 16px;
+		padding: 0 16px;
 	}
 
 	.qi-option-icon {
