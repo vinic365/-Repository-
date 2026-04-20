@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.2.2
+   Quiz Interativo – Frontend Styles  v1.2.3
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -43,15 +43,17 @@ body.qi-noscroll {
 	margin: 0 auto;
 	background: var(--qi-bg);
 	border-radius: 20px;
-	/* IMPORTANT: overflow must be visible so emoji can spill outside the button */
-	overflow: visible;
+	/* overflow:hidden clips the card edges cleanly; emoji still overflow outside
+	   their pill buttons since .qi-option itself has overflow:visible */
+	overflow: hidden;
 	position: relative;
-	/* 100vh fallback for browsers without dvh support (older iOS/Android) */
+	/* Explicit height (not just max-height) so flex children can fill the card */
+	height: calc(100vh - 24px);
+	height: calc(100dvh - 24px);
 	max-height: calc(100vh - 24px);
 	max-height: calc(100dvh - 24px);
 	display: flex;
 	flex-direction: column;
-	min-height: 0;
 }
 
 /* Shadow applied separately – doesn't need overflow:hidden */
@@ -106,8 +108,8 @@ body.qi-noscroll {
 .qi-page-image {
 	width: 100%;
 	line-height: 0;
-	/* Clip the image to the card shape */
-	overflow: hidden;
+	flex-shrink: 0; /* prevent image from being squeezed to 0 by flex */
+	overflow: hidden; /* clip image to card shape */
 }
 
 /* Image is first visible element → round its top corners */
@@ -172,9 +174,9 @@ body.qi-noscroll {
 .qi-option {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
 	width: 100%;
-	padding: 0 20px 0 28px;
+	padding: 0 20px;
 	background: var(--qi-btn);
 	color: var(--qi-btn-text);
 	border: none;
@@ -271,15 +273,18 @@ body.qi-noscroll {
 .qi-option-icon {
 	font-size: clamp(2.2rem, 6vw, 3.2rem);
 	line-height: 1;
-	flex-shrink: 0;
 	display: inline-block;
 
-	/* Push emoji so it sits half-outside the button's right end */
-	margin-left: 8px;
-	margin-right: -38px;
-
-	/* Sit above other elements */
-	position: relative;
+	/* Absolute: removed from flex flow so text stays truly centered.
+	   Vertical centering via top/bottom:0 + margin:auto (no transform
+	   needed, so the float/bounce animations are unaffected).          */
+	position: absolute;
+	right: -18px;
+	top: 0;
+	bottom: 0;
+	height: auto;
+	margin-top: auto;
+	margin-bottom: auto;
 	z-index: 2;
 
 	/* GPU compositing – will-change alone is enough.
@@ -462,19 +467,19 @@ body.qi-noscroll {
 	}
 
 	.qi-option {
-		padding: 0 16px 0 20px;
+		padding: 0 16px;
 	}
 
 	.qi-option-icon {
 		font-size: 1.9rem;
-		margin-right: -28px;
+		right: -12px;
 	}
 }
 
 @media (max-width: 380px) {
 	.qi-option-icon {
 		font-size: 1.6rem;
-		margin-right: -20px;
+		right: -8px;
 	}
 }
 
