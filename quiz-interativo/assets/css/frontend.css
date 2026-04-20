@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.0
+   Quiz Interativo – Frontend Styles  v1.3.1
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -124,7 +124,7 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 0 10px 0 24px;
+	padding: 0 18px 0 24px;
 	background: var(--qi-btn);
 	color: var(--qi-btn-text);
 	border: none;
@@ -204,18 +204,12 @@
 }
 
 /* =========================================================
-   EMOJI ICON – rounded square box inside the button
+   EMOJI ICON – plain emoji on the right of the button
    ========================================================= */
 .qi-option-icon {
 	flex-shrink: 0;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 54px;
-	height: 54px;
-	background: rgba(255, 255, 255, 0.22);
-	border-radius: 14px;
-	font-size: clamp(1.6rem, 5vw, 2.2rem);
+	display: inline-block;
+	font-size: clamp(1.8rem, 5vw, 2.4rem);
 	line-height: 1;
 	z-index: 2;
 	will-change: transform;
@@ -335,22 +329,17 @@
 	}
 
 	.qi-option {
-		padding: 0 8px 0 18px;
+		padding: 0 14px 0 18px;
 	}
 
 	.qi-option-icon {
-		width: 48px;
-		height: 48px;
-		border-radius: 12px;
-		font-size: 1.7rem;
+		font-size: 1.9rem;
 	}
 }
 
 @media (max-width: 380px) {
 	.qi-option-icon {
-		width: 42px;
-		height: 42px;
-		font-size: 1.5rem;
+		font-size: 1.6rem;
 	}
 }
 
