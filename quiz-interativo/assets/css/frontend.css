@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.7
+   Quiz Interativo – Frontend Styles  v1.3.8
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -9,19 +9,19 @@
 	box-sizing: border-box;
 }
 
-/* --- Quiz wrapper: breaks out of theme containers (Astra etc.) ---------- */
+/* --- Quiz wrapper: gray page bg, centers card, equal margins ------------ */
 .qi-overlay {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
 	min-height: 100svh;
-	padding: 20px;
+	/* top: 18px space + 7px progress bar height; sides/bottom: breathing room */
+	padding: 25px 12px 24px;
 	box-sizing: border-box;
-	background: #f0f0f0;
-	/* Full-viewport breakout: overrides theme container max-width/padding.
-	   calc(50% - 50vw) shifts left by (viewport/2 - container/2),
-	   aligning the overlay flush with the viewport edge. */
+	background: #f5f5f5;
+	/* Full-viewport breakout: overrides Astra/theme container max-width.
+	   calc(50% - 50vw) shifts left so the overlay aligns with viewport edge. */
 	width: 100vw;
 	margin-left: calc(50% - 50vw);
 }
@@ -37,20 +37,16 @@
 	--qi-transition: 0.22s ease;
 
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-	display: flex;
-	flex-direction: column;
 	width: 100%;
 	margin: 0 auto;
 	background: var(--qi-bg);
-	border-radius: 20px;
+	border-radius: 22px;
 	overflow: hidden;
 	position: relative;
-	max-height: calc(100vh - 40px);
-	max-height: calc(100svh - 40px);
 }
 
 .qi-shadow {
-	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
+	box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
 }
 
 /* --- Pages ---------------------------------------------- */
@@ -61,8 +57,6 @@
 .qi-page.qi-page-active {
 	display: flex;
 	flex-direction: column;
-	flex: 1;
-	min-height: 0;
 }
 
 .qi-page.qi-slide-in {
@@ -88,7 +82,7 @@
 }
 
 .qi-page-image:first-child {
-	border-radius: 20px 20px 0 0;
+	border-radius: 22px 22px 0 0;
 }
 
 .qi-page-image img {
@@ -96,34 +90,30 @@
 	height: auto;
 	display: block;
 	object-fit: cover;
-	max-height: clamp(120px, 28svh, 220px);
+	max-height: clamp(120px, 35vh, 380px);
 }
 
 /* --- Page content --------------------------------------- */
 .qi-page-content {
-	padding: 24px 24px 20px;
-	flex: 1;
-	min-height: 0;
-	display: flex;
-	flex-direction: column;
+	padding: 22px 16px 18px;
 }
 
 /* --- Title & subtitle ----------------------------------- */
 .qi-page-title {
-	margin: 0 0 8px;
-	font-size: clamp(1.35rem, 4vw, 1.85rem);
-	font-weight: 800;
+	margin: 0 0 6px;
+	font-size: clamp(1.1rem, 4vw, 1.35rem);
+	font-weight: 600;
 	text-align: center;
-	color: #1a1a1a;
-	line-height: 1.25;
+	color: #5a5a5a;
+	line-height: 1.3;
 }
 
 .qi-page-subtitle {
-	margin: 0 0 22px;
-	font-size: clamp(0.88rem, 2.5vw, 1rem);
+	margin: 0 0 14px;
+	font-size: clamp(0.72rem, 2.5vw, 0.82rem);
 	text-align: center;
-	color: #64748b;
-	line-height: 1.6;
+	color: #777;
+	line-height: 1.5;
 }
 
 /* --- Options list --------------------------------------- */
@@ -132,17 +122,12 @@
 	flex-direction: column;
 	gap: 14px;
 	width: 100%;
-	flex: 1;
-	min-height: 0;
+	margin-top: 6px;
 }
 
 /* --- Option wrap ---------------------------------------- */
 .qi-option-wrap {
 	width: 100%;
-	flex: 1;
-	min-height: 0;
-	display: flex;
-	max-height: calc(var(--qi-btn-height, 72px) * 1.5);
 }
 
 /* --- Option button -------------------------------------- */
@@ -151,23 +136,22 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	padding: 0 10px 0 24px;
+	padding: 0 10px 0 20px;
+	height: var(--qi-btn-height, 72px);
 	background: var(--qi-btn);
 	color: var(--qi-btn-text);
 	border: none;
 	border-radius: var(--qi-radius);
 	font-family: inherit;
-	font-weight: 800;
-	font-size: clamp(1rem, 3vw, 1.2rem);
-	letter-spacing: 0.5px;
+	font-weight: 600;
+	font-size: 1.05em;
+	letter-spacing: 0.3px;
 	cursor: pointer;
 	-webkit-appearance: none;
 	appearance: none;
 	touch-action: manipulation;
-	transition:
-		background  var(--qi-transition),
-		transform   var(--qi-transition),
-		box-shadow  var(--qi-transition);
+	transition: opacity var(--qi-transition);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	position: relative;
 	overflow: hidden;
 	user-select: none;
@@ -186,20 +170,13 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-	.qi-option:hover::before {
-		background: rgba(255, 255, 255, 0.12);
-	}
-
 	.qi-option:hover {
-		background: var(--qi-btn-hover);
-		transform: translateY(-3px) scale(1.015);
-		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+		opacity: 0.9;
 	}
 }
 
 .qi-option:active {
-	transform: scale(0.97);
-	box-shadow: none;
+	opacity: 0.8;
 }
 
 .qi-option:focus-visible {
@@ -207,64 +184,58 @@
 	outline-offset: 3px;
 }
 
-/* --- Button heights: flex-fill distributes space, capped by wrap max-height */
+/* --- Button size variants ------------------------------- */
 .qi-option.qi-btn-lg {
-	min-height: 0;
-	font-size: clamp(1rem, 3vw, 1.25rem);
+	height: var(--qi-btn-height, 72px);
+	font-size: 1.05em;
 }
 
 .qi-option.qi-btn-md {
-	min-height: 0;
-	font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+	height: calc(var(--qi-btn-height, 72px) * 0.8);
+	font-size: 0.95em;
 }
 
 .qi-option.qi-btn-sm {
-	min-height: 0;
-	font-size: 0.9rem;
+	height: calc(var(--qi-btn-height, 72px) * 0.65);
+	font-size: 0.88em;
 }
 
 /* --- Button text ---------------------------------------- */
 .qi-option-text {
 	flex: 1;
 	text-align: left;
-	/* Gap between text and emoji */
-	padding-right: 14px;
+	padding-right: 12px;
 }
 
 /* =========================================================
-   EMOJI ICON – rounded translucent box on the right of each button
+   EMOJI ICON – rounded translucent box, right side of button
    ========================================================= */
 .qi-option-icon {
 	flex-shrink: 0;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	font-size: clamp(1.4rem, 4vw, 1.9rem);
+	font-size: 1.6em;
 	line-height: 1;
-	background: rgba(255, 255, 255, 0.2);
-	border-radius: 14px;
-	width: 52px;
-	height: 52px;
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: 10px;
+	width: 46px;
+	height: 46px;
 	will-change: transform;
-	-webkit-animation: qiIconFloat 2.6s ease-in-out infinite both;
-	animation: qiIconFloat 2.6s ease-in-out infinite both;
+	-webkit-animation: qiIconFloat 2s ease-in-out infinite;
+	animation: qiIconFloat 2s ease-in-out infinite;
 	-webkit-transform-origin: center center;
 	transform-origin: center center;
 }
 
-/* --- Emoji animations ------------------------------------ */
-
+/* --- Emoji float animation ------------------------------ */
 @-webkit-keyframes qiIconFloat {
-	0%   { -webkit-transform: translateY(0)    scale(1);    }
-	35%  { -webkit-transform: translateY(-5px) scale(1.04); }
-	65%  { -webkit-transform: translateY(-3px) scale(1.02); }
-	100% { -webkit-transform: translateY(0)    scale(1);    }
+	0%,  100% { -webkit-transform: translateY(0)    rotate(0deg);  }
+	50%       { -webkit-transform: translateY(-5px) rotate(3deg);  }
 }
 @keyframes qiIconFloat {
-	0%   { transform: translateY(0)    scale(1);    }
-	35%  { transform: translateY(-5px) scale(1.04); }
-	65%  { transform: translateY(-3px) scale(1.02); }
-	100% { transform: translateY(0)    scale(1);    }
+	0%,  100% { transform: translateY(0)    rotate(0deg);  }
+	50%       { transform: translateY(-5px) rotate(3deg);  }
 }
 
 /* Hover bounce – only on true pointer devices */
@@ -307,41 +278,47 @@
 
 /* --- Footer / disclaimer -------------------------------- */
 .qi-page-footer {
-	padding: 14px 24px 18px;
+	padding: 12px 12px 14px;
 	border-top: 1px solid rgba(0, 0, 0, 0.06);
-	flex-shrink: 0;
 }
 
 .qi-disclaimer {
-	font-size: 0.62rem;
-	color: #94a3b8;
+	font-size: 0.5rem;
+	color: #888;
 	text-align: center;
-	line-height: 1.55;
-	margin: 0 0 8px;
+	line-height: 1.5;
+	margin: 0 0 6px;
+	white-space: pre-line;
 }
 
 .qi-policy-links {
 	text-align: center;
-	font-size: 0.74rem;
+	font-size: 0.5rem;
+	color: #888;
+	line-height: 1.5;
 }
 
 .qi-policy-links a {
-	color: #64748b;
-	text-decoration: underline;
-	transition: color 0.2s;
+	color: inherit;
+	text-decoration: none;
+	margin: 0 3px;
+	transition: text-decoration 0.2s;
 }
 
 .qi-policy-links a:hover {
-	color: #1e293b;
+	text-decoration: underline;
 }
 
-/* --- Progress bar --------------------------------------- */
+/* --- Progress bar (fixed at viewport top) --------------- */
 .qi-progress {
-	height: 4px;
-	background: rgba(0, 0, 0, 0.07);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 999;
+	height: 7px;
+	background: #e0e0ec;
 	overflow: hidden;
-	border-radius: 20px 20px 0 0;
-	flex-shrink: 0;
 }
 
 .qi-progress-bar {
@@ -353,11 +330,11 @@
 /* --- Responsive ----------------------------------------- */
 @media (max-width: 600px) {
 	.qi-page-content {
-		padding: 20px 18px 16px;
+		padding: 18px 14px 14px;
 	}
 
 	.qi-page-footer {
-		padding: 12px 18px 16px;
+		padding: 10px 12px 12px;
 	}
 
 	.qi-options {
@@ -365,18 +342,14 @@
 	}
 
 	.qi-option {
-		padding: 0 8px 0 20px;
-	}
-
-	.qi-option-text {
-		padding-right: 10px;
+		padding: 0 8px 0 18px;
 	}
 
 	.qi-option-icon {
-		width: 44px;
-		height: 44px;
-		border-radius: 10px;
-		font-size: 1.6rem;
+		width: 40px;
+		height: 40px;
+		border-radius: 8px;
+		font-size: 1.4em;
 	}
 }
 
@@ -386,10 +359,10 @@
 	}
 
 	.qi-option-icon {
-		width: 38px;
-		height: 38px;
-		border-radius: 8px;
-		font-size: 1.4rem;
+		width: 36px;
+		height: 36px;
+		border-radius: 7px;
+		font-size: 1.25em;
 	}
 }
 

@@ -45,7 +45,7 @@
 			icon.style.animationDelay = delay;
 		});
 
-		// Add optional progress bar.
+		// Add optional progress bar (fixed at viewport top, outside the card).
 		if (total > 1) {
 			const progressWrap = document.createElement('div');
 			progressWrap.className = 'qi-progress';
@@ -60,7 +60,10 @@
 			progressBar.style.width = (1 / total * 100) + '%';
 
 			progressWrap.appendChild(progressBar);
-			quiz.insertBefore(progressWrap, quiz.firstChild);
+			// Insert at start of body so it sits fixed at viewport top.
+			// On pages with multiple quizzes only one bar is shown; the last
+			// quiz to initialise wins, which is acceptable for single-quiz funnels.
+			document.body.insertAdjacentElement('afterbegin', progressWrap);
 
 			quiz._progressBar  = progressBar;
 			quiz._progressWrap = progressWrap;
