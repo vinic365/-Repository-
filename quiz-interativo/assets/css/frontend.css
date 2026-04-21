@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.5
+   Quiz Interativo – Frontend Styles  v1.3.6
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -9,16 +9,17 @@
 	box-sizing: border-box;
 }
 
-/* --- Quiz wrapper: fills viewport, centers card, adds breathing room --- */
+/* --- Quiz wrapper: gray page bg, centers card with equal margins -------- */
 .qi-overlay {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
 	min-height: 100svh;
-	padding: 16px;
+	padding: 20px;
 	box-sizing: border-box;
 	width: 100%;
+	background: #f0f0f0;
 }
 
 /* --- Quiz card ------------------------------------------ */
@@ -40,8 +41,8 @@
 	border-radius: 20px;
 	overflow: hidden;
 	position: relative;
-	max-height: calc(100vh - 32px);
-	max-height: calc(100svh - 32px);
+	max-height: calc(100vh - 40px);
+	max-height: calc(100svh - 40px);
 }
 
 .qi-shadow {
@@ -146,8 +147,7 @@
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	/* Symmetric padding keeps emoji clearly inside the pill on both sides */
-	padding: 0 24px;
+	padding: 0 10px 0 24px;
 	background: var(--qi-btn);
 	color: var(--qi-btn-text);
 	border: none;
@@ -228,39 +228,39 @@
 }
 
 /* =========================================================
-   EMOJI ICON – plain emoji on the right of the button
+   EMOJI ICON – rounded translucent box on the right of each button
    ========================================================= */
 .qi-option-icon {
 	flex-shrink: 0;
-	/* inline-flex + align-items:center centers the emoji glyph
-	   inside its line box on all Android/iOS browser versions   */
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	font-size: clamp(1.8rem, 5vw, 2.4rem);
+	font-size: clamp(1.4rem, 4vw, 1.9rem);
 	line-height: 1;
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 14px;
+	width: 52px;
+	height: 52px;
 	will-change: transform;
 	-webkit-animation: qiIconFloat 2.6s ease-in-out infinite both;
 	animation: qiIconFloat 2.6s ease-in-out infinite both;
-	-webkit-transform-origin: center 70%;
-	transform-origin: center 70%;
+	-webkit-transform-origin: center center;
+	transform-origin: center center;
 }
 
 /* --- Emoji animations ------------------------------------ */
 
 @-webkit-keyframes qiIconFloat {
-	0%   { -webkit-transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
-	20%  { -webkit-transform: translate3d(0, -5px, 0) rotate(-4deg)  scale(1.06); }
-	50%  { -webkit-transform: translate3d(0, -2px, 0) rotate(3deg)   scale(1.03); }
-	75%  { -webkit-transform: translate3d(0, -6px, 0) rotate(-2deg)  scale(1.05); }
-	100% { -webkit-transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
+	0%   { -webkit-transform: translateY(0)    scale(1);    }
+	35%  { -webkit-transform: translateY(-5px) scale(1.04); }
+	65%  { -webkit-transform: translateY(-3px) scale(1.02); }
+	100% { -webkit-transform: translateY(0)    scale(1);    }
 }
 @keyframes qiIconFloat {
-	0%   { transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
-	20%  { transform: translate3d(0, -5px, 0) rotate(-4deg)  scale(1.06); }
-	50%  { transform: translate3d(0, -2px, 0) rotate(3deg)   scale(1.03); }
-	75%  { transform: translate3d(0, -6px, 0) rotate(-2deg)  scale(1.05); }
-	100% { transform: translate3d(0, 0, 0)    rotate(0deg)   scale(1);    }
+	0%   { transform: translateY(0)    scale(1);    }
+	35%  { transform: translateY(-5px) scale(1.04); }
+	65%  { transform: translateY(-3px) scale(1.02); }
+	100% { transform: translateY(0)    scale(1);    }
 }
 
 /* Hover bounce – only on true pointer devices */
@@ -278,20 +278,20 @@
 }
 
 @-webkit-keyframes qiIconBounce {
-	0%   { -webkit-transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
-	18%  { -webkit-transform: translate3d(0, -10px, 0) scale(1.4)  rotate(-10deg); }
-	40%  { -webkit-transform: translate3d(0,  3px, 0)  scale(0.88) rotate(6deg);   }
-	62%  { -webkit-transform: translate3d(0, -4px, 0)  scale(1.18) rotate(-4deg);  }
-	80%  { -webkit-transform: translate3d(0,  2px, 0)  scale(0.96) rotate(2deg);   }
-	100% { -webkit-transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
+	0%   { -webkit-transform: scale(1);                    }
+	18%  { -webkit-transform: translateY(-8px) scale(1.25); }
+	40%  { -webkit-transform: translateY(2px)  scale(0.9);  }
+	62%  { -webkit-transform: translateY(-4px) scale(1.12); }
+	80%  { -webkit-transform: translateY(1px)  scale(0.97); }
+	100% { -webkit-transform: scale(1);                    }
 }
 @keyframes qiIconBounce {
-	0%   { transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
-	18%  { transform: translate3d(0, -10px, 0) scale(1.4)  rotate(-10deg); }
-	40%  { transform: translate3d(0,  3px, 0)  scale(0.88) rotate(6deg);   }
-	62%  { transform: translate3d(0, -4px, 0)  scale(1.18) rotate(-4deg);  }
-	80%  { transform: translate3d(0,  2px, 0)  scale(0.96) rotate(2deg);   }
-	100% { transform: translate3d(0, 0, 0)     scale(1)    rotate(0deg);   }
+	0%   { transform: scale(1);                    }
+	18%  { transform: translateY(-8px) scale(1.25); }
+	40%  { transform: translateY(2px)  scale(0.9);  }
+	62%  { transform: translateY(-4px) scale(1.12); }
+	80%  { transform: translateY(1px)  scale(0.97); }
+	100% { transform: scale(1);                    }
 }
 
 /* --- Loading state -------------------------------------- */
@@ -361,7 +361,7 @@
 	}
 
 	.qi-option {
-		padding: 0 20px;
+		padding: 0 8px 0 20px;
 	}
 
 	.qi-option-text {
@@ -369,17 +369,23 @@
 	}
 
 	.qi-option-icon {
-		font-size: 2rem;
+		width: 44px;
+		height: 44px;
+		border-radius: 10px;
+		font-size: 1.6rem;
 	}
 }
 
 @media (max-width: 380px) {
 	.qi-option {
-		padding: 0 16px;
+		padding: 0 8px 0 16px;
 	}
 
 	.qi-option-icon {
-		font-size: 1.7rem;
+		width: 38px;
+		height: 38px;
+		border-radius: 8px;
+		font-size: 1.4rem;
 	}
 }
 
