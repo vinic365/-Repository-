@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.8
+   Quiz Interativo – Frontend Styles  v1.3.9
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -9,21 +9,41 @@
 	box-sizing: border-box;
 }
 
-/* --- Quiz wrapper: gray page bg, centers card, equal margins ------------ */
+/* =========================================================
+   Page-level gray background (only on quiz pages).
+   :has() is supported by 96%+ of browsers (progressive enhancement).
+   Removes Astra/theme wrapper backgrounds so the gray body
+   shows uniformly around the card on all screen sizes.
+   ========================================================= */
+body:has(.qi-overlay) {
+	background-color: #f5f5f5;
+}
+
+body:has(.qi-overlay) .site-content,
+body:has(.qi-overlay) .site-main,
+body:has(.qi-overlay) main,
+body:has(.qi-overlay) #primary,
+body:has(.qi-overlay) article,
+body:has(.qi-overlay) .ast-article-single,
+body:has(.qi-overlay) .entry-content,
+body:has(.qi-overlay) .post-content {
+	background: transparent !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+/* --- Quiz wrapper: centers card, equal margins on all sides ------------- */
 .qi-overlay {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
 	min-height: 100svh;
-	/* top: 18px space + 7px progress bar height; sides/bottom: breathing room */
+	/* top: 18px gap + 7px progress bar; sides/bottom: breathing room */
 	padding: 25px 12px 24px;
 	box-sizing: border-box;
-	background: #f5f5f5;
-	/* Full-viewport breakout: overrides Astra/theme container max-width.
-	   calc(50% - 50vw) shifts left so the overlay aligns with viewport edge. */
-	width: 100vw;
-	margin-left: calc(50% - 50vw);
+	width: 100%;
+	background: #f5f5f5; /* fallback for browsers without :has() support */
 }
 
 /* --- Quiz card ------------------------------------------ */
