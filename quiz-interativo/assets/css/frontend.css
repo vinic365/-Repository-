@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.4
+   Quiz Interativo – Frontend Styles  v1.3.5
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -91,7 +91,7 @@
 	height: auto;
 	display: block;
 	object-fit: cover;
-	max-height: 220px;
+	max-height: clamp(120px, 28svh, 220px);
 }
 
 /* --- Page content --------------------------------------- */
@@ -99,7 +99,8 @@
 	padding: 24px 24px 20px;
 	flex: 1;
 	min-height: 0;
-	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
 }
 
 /* --- Title & subtitle ----------------------------------- */
@@ -126,11 +127,17 @@
 	flex-direction: column;
 	gap: 14px;
 	width: 100%;
+	flex: 1;
+	min-height: 0;
 }
 
 /* --- Option wrap ---------------------------------------- */
 .qi-option-wrap {
 	width: 100%;
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	max-height: calc(var(--qi-btn-height, 72px) * 1.5);
 }
 
 /* --- Option button -------------------------------------- */
@@ -196,19 +203,19 @@
 	outline-offset: 3px;
 }
 
-/* --- Button heights controlled by --qi-btn-height ------- */
+/* --- Button heights: flex-fill distributes space, capped by wrap max-height */
 .qi-option.qi-btn-lg {
-	min-height: var(--qi-btn-height, 72px);
+	min-height: 0;
 	font-size: clamp(1rem, 3vw, 1.25rem);
 }
 
 .qi-option.qi-btn-md {
-	min-height: calc(var(--qi-btn-height, 72px) * 0.78);
+	min-height: 0;
 	font-size: clamp(0.9rem, 2.5vw, 1.05rem);
 }
 
 .qi-option.qi-btn-sm {
-	min-height: calc(var(--qi-btn-height, 72px) * 0.6);
+	min-height: 0;
 	font-size: 0.9rem;
 }
 
