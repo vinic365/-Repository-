@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.6
+   Quiz Interativo – Frontend Styles  v1.3.7
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -9,7 +9,7 @@
 	box-sizing: border-box;
 }
 
-/* --- Quiz wrapper: gray page bg, centers card with equal margins -------- */
+/* --- Quiz wrapper: breaks out of theme containers (Astra etc.) ---------- */
 .qi-overlay {
 	display: flex;
 	align-items: center;
@@ -18,8 +18,12 @@
 	min-height: 100svh;
 	padding: 20px;
 	box-sizing: border-box;
-	width: 100%;
 	background: #f0f0f0;
+	/* Full-viewport breakout: overrides theme container max-width/padding.
+	   calc(50% - 50vw) shifts left by (viewport/2 - container/2),
+	   aligning the overlay flush with the viewport edge. */
+	width: 100vw;
+	margin-left: calc(50% - 50vw);
 }
 
 /* --- Quiz card ------------------------------------------ */
