@@ -107,17 +107,34 @@ class Quiz_Interativo_Shortcode {
 		$is_first   = 0 === $page_index;
 		$page_class = 'qi-page' . ( $is_first ? ' qi-page-active' : '' );
 
-		$bg_color        = ! empty( $page['bg_color'] )        ? $page['bg_color']        : $global_opts['bg_color'];
-		$btn_color       = ! empty( $page['btn_color'] )       ? $page['btn_color']       : $global_opts['btn_color'];
-		$btn_hover_color = ! empty( $page['btn_hover_color'] ) ? $page['btn_hover_color'] : $global_opts['btn_hover_color'];
-		$btn_text_color  = ! empty( $page['btn_text_color'] )  ? $page['btn_text_color']  : $global_opts['btn_text_color'];
-		$btn_height      = ! empty( $page['btn_height'] )      ? (int) $page['btn_height'] : (int) $global_opts['btn_height'];
+		$bg_color        = ! empty( $page['bg_color'] ) ? $page['bg_color'] : $global_opts['bg_color'];
+		$page_btn_color  = $page['btn_color']       ?? '';
+		$page_btn_hover  = $page['btn_hover_color'] ?? '';
+		$page_btn_text   = $page['btn_text_color']  ?? '';
+		$page_btn_height = isset( $page['btn_height'] ) ? (int) $page['btn_height'] : 0;
 
-		$page_style  = 'background-color:' . $bg_color . ';';
-		$page_style .= '--qi-btn:'         . $btn_color . ';';
-		$page_style .= '--qi-btn-hover:'   . $btn_hover_color . ';';
-		$page_style .= '--qi-btn-text:'    . $btn_text_color . ';';
-		$page_style .= '--qi-btn-height:'  . $btn_height . 'px;';
+		// Only write per-page CSS variable overrides when they genuinely differ
+		// from the quiz-level global setting. This prevents values that were
+		// auto-saved with the old defaults (when the quiz was first created)
+		// from silently overriding the global colour/height configured later.
+		$page_style = 'background-color:' . $bg_color . ';';
+		if ( ! empty( $page_btn_color ) && $page_btn_color !== $global_opts['btn_color'] ) {
+			$page_style .= '--qi-btn:' . $page_btn_color . ';';
+		}
+		if ( ! empty( $page_btn_hover ) && $page_btn_hover !== $global_opts['btn_hover_color'] ) {
+			$page_style .= '--qi-btn-hover:' . $page_btn_hover . ';';
+		}
+		if ( ! empty( $page_btn_text ) && $page_btn_text !== $global_opts['btn_text_color'] ) {
+			$page_style .= '--qi-btn-text:' . $page_btn_text . ';';
+		}
+		if ( $page_btn_height > 0 && $page_btn_height !== (int) $global_opts['btn_height'] ) {
+			$page_style .= '--qi-btn-height:' . $page_btn_height . 'px;';
+		}
+
+		// Effective btn color for this page – used to scope per-option comparisons.
+		$effective_btn_color = ( ! empty( $page_btn_color ) && $page_btn_color !== $global_opts['btn_color'] )
+			? $page_btn_color
+			: $global_opts['btn_color'];
 		?>
 		<div
 			class="<?php echo esc_attr( $page_class ); ?>"
@@ -150,7 +167,7 @@ class Quiz_Interativo_Shortcode {
 				<?php if ( ! empty( $page['options'] ) ) : ?>
 				<div class="qi-options" role="list">
 					<?php foreach ( $page['options'] as $opt_index => $opt ) :
-						self::render_option( $quiz_id, $page_index, $opt_index, $opt, $global_opts );
+						self::render_option( $quiz_id, $page_index, $opt_index, $opt, $global_opts, $effective_btn_color );
 					endforeach; ?>
 				</div>
 				<?php endif; ?>
@@ -186,7 +203,7 @@ class Quiz_Interativo_Shortcode {
 	 * Option button HTML
 	 * ------------------------------------------------------------------ */
 
-	private static function render_option( int $quiz_id, int $page_index, int $opt_index, array $opt, array $global_opts ): void {
+	private static function render_option( int $quiz_id, int $page_index, int $opt_index, array $opt, array $global_opts, string $effective_page_btn_color = '' ): void {
 		if ( empty( $opt['text'] ) ) {
 			return;
 		}
@@ -194,7 +211,12 @@ class Quiz_Interativo_Shortcode {
 		$size_class = 'large' === ( $opt['btn_size'] ?? 'large' ) ? 'qi-btn-lg'
 			: ( 'medium' === $opt['btn_size'] ? 'qi-btn-md' : 'qi-btn-sm' );
 
-		$custom_color = ! empty( $opt['btn_color'] ) ? $opt['btn_color'] : '';
+		// Only write per-option colour if it genuinely differs from the
+		// inherited page colour. Prevents auto-saved default values from
+		// overriding a custom page or quiz-level colour set afterwards.
+		$inherit_from = ! empty( $effective_page_btn_color ) ? $effective_page_btn_color : $global_opts['btn_color'];
+		$opt_color    = $opt['btn_color'] ?? '';
+		$custom_color = ( ! empty( $opt_color ) && $opt_color !== $inherit_from ) ? $opt_color : '';
 		$style_attr   = $custom_color ? 'style="--qi-btn:' . esc_attr( $custom_color ) . ';"' : '';
 
 		$action_type   = $opt['action_type'] ?? 'page';

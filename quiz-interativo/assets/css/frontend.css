@@ -1,5 +1,5 @@
 /* =========================================================
-   Quiz Interativo – Frontend Styles  v1.3.9
+   Quiz Interativo – Frontend Styles  v1.4.0
    ========================================================= */
 
 /* --- Reset & base --------------------------------------- */
@@ -103,6 +103,12 @@ body:has(.qi-overlay) .post-content {
 
 .qi-page-image:first-child {
 	border-radius: 22px 22px 0 0;
+}
+
+/* Image optimizers (EWWW, ShortPixel, etc.) wrap <img> in <picture>.
+   Set display:block so the inline <picture> doesn't add a descender gap. */
+.qi-page-image picture {
+	display: block;
 }
 
 .qi-page-image img {
